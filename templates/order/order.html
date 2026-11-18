@@ -1,0 +1,215 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load static price_tags %}
+{% block title %}سبد خرید{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'order/style.css' %}">
+{% endblock %}
+{% block content %}
+    <main class="page">
+      <div class="wrap">
+        <div class="cart-grid">
+          <!-- Items column -->
+          <div class="cart-items">
+
+            <!-- Basket actions -->
+            <div class="basket-actions">
+              <div class="basket-title">
+                <h1>اقلام انتخابی شما</h1>
+                <span class="item-count" id="items-count-badge">{{ details|length|fa_digits }} مورد</span>
+              </div>
+            </div>
+
+            <!-- Items -->
+                <div class="items-list" id="items-list">
+                  {% for detail in details %}
+                    <article class="item-card"
+                             data-id="{{ detail.id }}"
+                             data-price="{{ detail.price }}"
+                             data-old="{{ detail.product.old_price|default:0 }}">
+
+                      <div class="item-image">
+                        {% if detail.product.image %}
+                          <a href="{{ detail.product.product_detail_url }}">
+                            <img src="{{ detail.product.image.url }}" alt="{{ detail.product.title }}" />
+                          </a>
+                        {% endif %}
+                        {% if detail.product.discount %}
+                          <span class="discount-tag">{{ detail.product.discount|fa_digits }}٪ تخفیف</span>
+                        {% endif %}
+                      </div>
+
+                      <div class="item-body">
+                        <div>
+                          <div class="item-head">
+                            <h2>
+                              <a href="{{ detail.product.product_detail_url }}">{{ detail.product.title }}</a>
+                            </h2>
+                            <a class="remove-btn" type="button" href="remove_item/{{ detail.id  }}"
+                                    title="حذف از سبد خرید" data-action="remove">
+                              <span class="material-symbols-outlined icon-base">close</span>
+                            </a>
+                          </div>
+
+                          <div class="item-attrs">
+                            {% with cat=detail.product.cetegories.first %}
+                              {% if cat %}
+                                <div class="attr primary">
+                                  <span class="material-symbols-outlined icon-base">category</span>
+                                  <span>{{ cat.name }}</span>
+                                </div>
+                              {% endif %}
+                            {% endwith %}
+
+                            <div class="attr tertiary">
+                              <span class="material-symbols-outlined icon-base">verified_user</span>
+                              <span>ضمانت اصالت کالا</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="item-footer">
+                          <div class="item-controls">
+                            <div class="qty-stepper">
+                              <button class="qty-btn" type="button" data-action="plus">
+                                <span class="material-symbols-outlined icon-base">add</span>
+                              </button>
+                              <span class="qty-value">{{ detail.count|fa_digits }}</span>
+                              <button class="qty-btn muted" type="button" data-action="minus">
+                                <span class="material-symbols-outlined icon-base">remove</span>
+                              </button>
+                            </div>
+                            <button class="save-later" type="button" data-action="save">
+                              <span class="material-symbols-outlined icon-base">bookmark_add</span>
+                              <span>ذخیره برای بعد</span>
+                            </button>
+                          </div>
+
+                          <div class="item-price">
+                            {% if detail.product.old_price %}
+                              <span class="old-price">{{ detail.old_price|toman }} تومان</span>
+                            {% endif %}
+                            <div class="price-row">
+                              <span class="price-num">{{ detail.total_price|toman }}</span>
+                              <span class="price-unit">تومان</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </article>
+                  {% empty %}
+                    <p>هیچ محصولی به سبد خرید اضافه نکردی</p>
+                  {% endfor %}
+                </div>
+          </div>
+
+          <!-- Sidebar -->
+          <aside class="cart-sidebar">
+            <div class="summary-card">
+              <div class="summary-head">
+                <h3>خلاصه پیش‌فاکتور</h3>
+                <span>محاسبه برخط</span>
+              </div>
+
+              <div>
+                <label class="promo-label" for="promo-code"
+                  >کد تخفیف یا کارت هدیه</label
+                >
+                <div class="promo-form">
+                  <input
+                    id="promo-code"
+                    type="text"
+                    placeholder="مثلاً: NOWRUZ1403"
+                  />
+                  <button type="button" id="btn-apply-promo">اعمال</button>
+                </div>
+              </div>
+
+              <div class="calc-list">
+                <div class="calc-row">
+                  <span>قیمت کالاها (<span id="calc-count">{{ details|length|fa_digits }}</span> کالا)</span>
+                  <span class="val" id="calc-subtotal">{{ subtotal|toman }} تومان</span>
+                </div>
+                <div class="calc-row">
+                  <span>تخفیف شگفت‌انگیز کالاها</span>
+                  <span class="val discount" id="calc-discount">{{ discount|toman }}- تومان</span>
+                </div>
+                <div class="calc-row">
+                  <span>هزینه بسته‌بندی و ارسال</span>
+                  <span class="free-ship-badge">
+                    <span class="material-symbols-outlined icon-sm">done_all</span>
+                    <span>رایگان شد</span>
+                  </span>
+                </div>
+                <div class="calc-row">
+                  <span>امتیاز باشگاه مشتریان (دیجی‌کلاب)</span>
+                  <span class="val points" id="calc-points">+۱۴۰ امتیاز</span>
+                </div>
+              </div>
+
+              <div class="total-box">
+                <div class="total-row">
+                  <span class="label">مبلغ قابل پرداخت:</span>
+                    <div class="total-price">
+                      <span class="num" id="calc-total">{{ total|toman }}</span>
+                      <span class="unit">تومان</span>
+                    </div>
+                </div>
+                <p class="tax-note">شامل کلیه مالیات‌ها و عوارض قانونی</p>
+              </div>
+
+              <button class="checkout-btn" id="btn-checkout" type="button">
+                <span>ادامه فرآیند خرید و ثبت آدرس</span>
+                <span class="material-symbols-outlined icon-md">arrow_back</span>
+              </button>
+              <p class="reserve-note">
+                کالاهای موجود در سبد خرید تا ۲۰ دقیقه برای شما رزرو باقی می‌ماند.
+              </p>
+            </div>
+
+            <div class="trust-panel">
+              <div class="trust-item">
+                <div class="trust-icon green">
+                  <span class="material-symbols-outlined icon-base">verified</span>
+                </div>
+                <div>
+                  <h4>ضمانت اصالت ۱۰۰٪ کالاها</h4>
+                  <p>
+                    تمامی اقلام با شناسه اصالت کالا و تأییدیه رسمی نمایندگی ارسال
+                    می‌شوند.
+                  </p>
+                </div>
+              </div>
+              <div class="trust-item">
+                <div class="trust-icon blue">
+                  <span class="material-symbols-outlined icon-base">autorenew</span>
+                </div>
+                <div>
+                  <h4>۷ روز ضمانت بازگشت وجه</h4>
+                  <p>
+                    امکان انصراف از خرید یا تعویض رایگان طبق قوانین حمایت از
+                    مصرف‌کننده.
+                  </p>
+                </div>
+              </div>
+              <div class="trust-item">
+                <div class="trust-icon gray">
+                  <span class="material-symbols-outlined icon-base"
+                    >support_agent</span
+                  >
+                </div>
+                <div>
+                  <h4>پشتیبانی اختصاصی سفارش</h4>
+                  <p>کارشناسان ما به صورت ۲۴ ساعته پاسخگوی سوالات شما هستند.</p>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
+{% endblock %}
+{% block script %}
+    <script src={% static 'order/script.js' %}></script>
+{% endblock %}

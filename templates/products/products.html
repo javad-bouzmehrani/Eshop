@@ -1,0 +1,408 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}محصولات{% endblock %}
+{% load price_tags %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'products/style.css' %}">
+{% endblock %}
+{% block content %}
+    <!-- ============ MAIN ============ -->
+    <main class="site-main">
+      <div class="main-stack">
+        <!-- Ambient glows -->
+        <div class="ambient-wrap">
+          <div class="ambient-glow glow-primary"></div>
+          <div class="ambient-glow glow-secondary"></div>
+
+          <div style="margin-top: 25px"></div>
+          <!-- Category Header -->
+          <div class="cat-header">
+            <div>
+              <div class="cat-title-row">
+                <h1 class="cat-title">خرید انواع گوشی موبایل</h1>
+                <span class="cat-badge">اصالت ۱۰۰٪ تضمینی</span>
+              </div>
+              <p class="cat-desc">
+                مقایسه مشخصات فنی، بررسی قیمت روز و خرید آنلاین معتبرترین
+                برندهای تلفن همراه
+              </p>
+            </div>
+
+            <div class="brand-chips">
+              <button class="chip" type="button">
+                <span class="chip-dot dot-secondary"></span>
+                <span>اپل (Apple)</span>
+              </button>
+              <button class="chip" type="button" >
+                <span class="chip-dot dot-primary"></span>
+                <span>سامسونگ (Samsung)</span>
+              </button>
+              <button class="chip" type="button">
+                <span class="chip-dot dot-secondary-container"></span>
+                <span>شیائومی (Xiaomi)</span>
+              </button>
+              <button class="chip" type="button">
+                <span class="chip-dot dot-tertiary"></span>
+                <span>آنِر (Honor)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Content Grid: Sidebar + Products -->
+          <div class="content-grid">
+            <!-- ============ SIDEBAR ============ -->
+            <aside class="sidebar" aria-label="فیلترهای پیشرفته">
+              <!-- Filter header -->
+              <div class="filter-card filter-head">
+                <div class="filter-head-left">
+                  <span class="material-symbols-outlined icon-20 text-primary"
+                    >tune</span
+                  >
+                  <span class="text-title-md bold">فیلترهای پیشرفته</span>
+                </div>
+                <button class="reset-btn" id="reset-filters" type="button">
+                  حذف همه
+                </button>
+              </div>
+
+              <!-- Toggle: express shipping -->
+              <div class="filter-card toggle-card">
+                <div class="toggle-label">
+                  <span class="material-symbols-outlined icon-20 text-secondary"
+                    >bolt</span
+                  >
+                  <span class="text-label-lg">ارسال فوری امروز</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="switch-track"></span>
+                </label>
+              </div>
+
+              <!-- Subcategories -->
+              <div class="filter-card">
+                <div class="filter-card-title">
+                  <span class="bold">دسته‌بندی‌های مرتبط</span>
+                  <span class="material-symbols-outlined icon-18 text-outline"
+                    >expand_more</span
+                  >
+                </div>
+                <ul class="subcat-list">
+                  <li>
+                    <a href="{% url 'product_by_category' 'samsung' %}" class="subcat-item{% if current_category|lower == 'samsung' %} active{% endif %}"
+                      ><span>گوشی های سامسونگ</span
+                      ><span class="subcat-count">{{ counts.samsung|default:0 }}</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="{% url 'product_by_category' 'iphone' %}" class="subcat-item{% if current_category|lower == 'iphone' %} active{% endif %}"
+                      ><span>آیفون</span
+                      ><span class="subcat-count">{{ counts.iphone|default:0 }}</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="{% url 'product_by_category' 'xiaomi' %}" class="subcat-item{% if current_category|lower == 'xiaomi' %} active{% endif %}"
+                      ><span>شیائومی</span
+                      ><span class="subcat-count">{{ counts.iphone|default:0 }}</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="#" class="subcat-item{% if current_category|lower == '#' %} active{% endif %}"
+                      ><span>گوشی‌های تاشو نوین</span
+                      ><span class="subcat-count">0</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="#" class="subcat-item{% if current_category|lower == '#' %} active{% endif %}"
+                      ><span>گوشی‌های ساده و کلیدی</span
+                      ><span class="subcat-count">0</span></a
+                    >
+                  </li>
+                </ul>
+              </div>
+
+
+              <!-- Brand filter -->
+              <div class="filter-card">
+                <div class="filter-card-title">
+                  <span class="bold">برند کالا</span>
+                </div>
+                <div class="brand-search-wrap">
+                  <input
+                    type="text"
+                    class="brand-search-input"
+                    placeholder="جستجوی نام برند..."
+                  />
+                  <span
+                    class="material-symbols-outlined icon-18 brand-search-icon"
+                    >search</span
+                  >
+                </div>
+                <div class="brand-list">
+                  <label class="brand-item">
+                    <span class="brand-item-left"
+                      ><input type="checkbox" checked class="cbx" /><span
+                        >سامسونگ (Samsung)</span
+                      ></span
+                    >
+                    <span class="text-label-sm text-outline">۱۴۲</span>
+                  </label>
+                  <label class="brand-item">
+                    <span class="brand-item-left"
+                      ><input type="checkbox" checked class="cbx" /><span
+                        >اپل (Apple)</span
+                      ></span
+                    >
+                    <span class="text-label-sm text-outline">۷۶</span>
+                  </label>
+                  <label class="brand-item">
+                    <span class="brand-item-left"
+                      ><input type="checkbox" checked class="cbx" /><span
+                        >شیائومی (Xiaomi)</span
+                      ></span
+                    >
+                    <span class="text-label-sm text-outline">۹۱</span>
+                  </label>
+                  <label class="brand-item">
+                    <span class="brand-item-left"
+                      ><input type="checkbox" class="cbx" /><span
+                        >هواوی (Huawei)</span
+                      ></span
+                    >
+                    <span class="text-label-sm text-outline">۲۴</span>
+                  </label>
+                  <label class="brand-item">
+                    <span class="brand-item-left"
+                      ><input type="checkbox" class="cbx" /><span
+                        >آنِر (Honor)</span
+                      ></span
+                    >
+                    <span class="text-label-sm text-outline">۱۵</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Color swatch -->
+              <div class="filter-card">
+                <div class="filter-card-title">
+                  <span class="bold">رنگ‌بندی بدنه</span>
+                </div>
+                <div class="color-swatches">
+                  <button
+                    type="button"
+                    class="swatch swatch-black selected"
+                    title="مشکی تیتانیوم"
+                  >
+                    <span class="material-symbols-outlined icon-14">check</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="swatch swatch-silver"
+                    title="نقره‌ای طبیعی"
+                  ></button>
+                  <button
+                    type="button"
+                    class="swatch swatch-blue"
+                    title="آبی اقیانوسی"
+                  ></button>
+                  <button
+                    type="button"
+                    class="swatch swatch-gold"
+                    title="طلایی کهربایی"
+                  ></button>
+                  <button
+                    type="button"
+                    class="swatch swatch-green"
+                    title="سبز زمردی"
+                  ></button>
+                  <button
+                    type="button"
+                    class="swatch swatch-purple"
+                    title="بنفش یاسی"
+                  ></button>
+                  <button
+                    type="button"
+                    class="swatch swatch-white"
+                    title="سفید مرواریدی"
+                  ></button>
+                </div>
+              </div>
+            </aside>
+
+            <!-- ============ PRODUCT AREA ============ -->
+            <section class="product-area">
+              <!-- Sort Toolbar -->
+              <div class="toolbar">
+                <div class="sort-tabs">
+                  <div class="sort-label">
+                    <span class="material-symbols-outlined icon-18">sort</span>
+                    <span class="text-label-md">مرتب‌سازی:</span>
+                  </div>
+                  <button class="sort-btn active" type="button">
+                    مرتبط‌ترین
+                  </button>
+                  <button class="sort-btn" type="button">پربازدیدترین</button>
+                  <button class="sort-btn" type="button">جدیدترین</button>
+                  <button class="sort-btn" type="button">پرفروش‌ترین</button>
+                  <button class="sort-btn" type="button">ارزان‌ترین</button>
+                  <button class="sort-btn" type="button">گران‌ترین</button>
+                </div>
+
+                <div class="toolbar-right">
+                  <span class="text-label-md text-on-surface-variant">
+                    <span class="bold text-on-surface">۳۴۸</span> کالا
+                  </span>
+                  <div class="view-switch">
+                    <button
+                      class="view-btn active"
+                      id="view-grid"
+                      type="button"
+                      title="نمایش شبکه‌ای"
+                    >
+                      <span class="material-symbols-outlined icon-20"
+                        >grid_view</span
+                      >
+                    </button>
+                    <button
+                      class="view-btn"
+                      id="view-list"
+                      type="button"
+                      title="نمایش سطری"
+                    >
+                      <span class="material-symbols-outlined icon-20"
+                        >view_list</span
+                      >
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ============ PRODUCT GRID ============ -->
+              <div class="products-grid" id="product-grid">
+                {% for product in object_list %}
+                    <a href="{{ product.product_detail_url }}">
+                    <article class="product-item group">
+                      <div class="item-top">
+                        <span class="discount-badge">%{{ product.discount|fa_digits }}&nbsp;تخفیف</span>
+                        <button
+                          class="fav-btn"
+                          type="button"
+                          title="افزودن به علاقه‌مندی‌ها"
+                        >
+                          <span class="material-symbols-outlined icon-18"
+                            >favorite</span
+                          >
+                        </button>
+                      </div>
+
+                      <div class="item-media">
+                        <img src="{{ product.image.url }}" alt="{{ product.title }}" />
+                      </div>
+
+                      <div class="item-colors">
+                        <span class="color-mini mini-black ring"></span>
+                        <span class="color-mini mini-silver"></span>
+                        <span class="color-mini mini-blue"></span>
+                        <span class="text-label-sm text-outline">+۲ رنگ</span>
+                      </div>
+
+                      <div>
+                        <h2 class="item-title">
+                            {{ product.title }}
+                        </h2>
+                        <div class="item-meta">
+                          <div class="item-rating">
+                            <span
+                              class="material-symbols-outlined icon-16 icon-fill text-amber"
+                              >star</span
+                            >
+                            <span class="bold text-on-surface">۴.۸</span>
+                            <span class="text-outline">(۴۲۰ نظر)</span>
+                          </div>
+                          <div class="item-ship text-secondary">
+                            <span class="material-symbols-outlined icon-14"
+                              >local_shipping</span
+                            >
+                            <span>ارسال فوری</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="item-footer">
+                        <div class="item-price">
+                          <span class="text-label-sm text-outline line-through"
+                            >{{ product.old_price|toman }}</span
+                          >
+                          <div class="price-now">
+                            <span class="price-num">{{ product.price|toman }}</span>
+                            <span class="text-label-sm text-outline">تومان</span>
+                          </div>
+                        </div>
+                        <button
+                          class="add-cart"
+                          type="button"
+                          title="افزودن به سبد خرید"
+                        >
+                          <span class="material-symbols-outlined icon-20"
+                            >add_shopping_cart</span
+                          >
+                        </button>
+                      </div>
+                    </article>
+                    </a>
+                {% endfor %}
+              </div>
+
+              <!-- ============ PAGINATION ============ -->
+              <div class="pagination-bar">
+                <div class="text-body-sm text-on-surface-variant">
+                  نمایش <span class="bold text-on-surface">۱ تا ۶</span> از
+                  مجموع <span class="bold text-on-surface">۳۴۸</span> کالا
+                </div>
+
+                <nav class="pagination" aria-label="صفحه‌بندی">
+                    {% if page_obj.has_previous %}
+                      <a href="?page={{ page_obj.previous_page_number }}" class="page-nav">
+                        <span class="material-symbols-outlined icon-18">chevron_right</span>
+                        قبلی
+                      </a>
+                    {% else %}
+                      <span class="page-nav disabled">
+                        <span class="material-symbols-outlined icon-18">chevron_right</span>
+                        قبلی
+                      </span>
+                    {% endif %}
+                    {% for num in page_range %}
+                      {% if num == page_obj.paginator.ELLIPSIS %}
+                        <span class="page-dots">...</span>
+                      {% elif num == page_obj.number %}
+                        <button class="page-num active" type="button">{{ num }}</button>
+                      {% else %}
+                        <button class="page-num" type="button"
+                          onclick="location.href='?page={{ num }}'">{{ num }}</button>
+                      {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                      <a href="?page={{ page_obj.next_page_number }}" class="page-nav">
+                        <span>بعدی</span>
+                        <span class="material-symbols-outlined icon-18">chevron_left</span>
+                      </a>
+                    {% else %}
+                      <span class="page-nav disabled">
+                        <span>بعدی</span>
+                        <span class="material-symbols-outlined icon-18">chevron_left</span>
+                      </span>
+                    {% endif %}
+                </nav>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </main>
+{% endblock %}
+
+{% block script %}
+    <script src={% static 'products/script.js' %}></script>
+{% endblock %}

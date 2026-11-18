@@ -1,0 +1,78 @@
+{% load static %}
+{% load price_tags %}
+
+<header class="site-header">
+  <div class="header-inner">
+
+    <!-- Top bar -->
+    <div class="top-bar">
+      <div class="top-bar-group">
+        <span>پشتیبانی تلفنی ۲۴/۷: {{ setting.phone_support }}</span>
+        <a href="#" data-path="order-tracking">{{ setting.tag_up_right }}</a>
+      </div>
+      <div class="top-bar-group top-bar-accent">
+        <span class="material-symbols-outlined icon-16">electric_bolt</span>
+        <span>{{ setting.tag_up_left }}</span>
+      </div>
+    </div>
+
+    <!-- Main header -->
+    <div class="header-main">
+      <div class="header-left">
+        <a href="#" class="brand" data-path="home">{{ setting.site_name }}</a>
+
+        <div class="search-box">
+          <span class="material-symbols-outlined search-icon">search</span>
+            <form action="{% url 'search' %}" style="display: contents">
+              <input type="text" name="q" value="{{ request.GET.q }}" placeholder="جستجوی کالا، برند یا دسته بندی...">
+              <button type="button" class="search-btn search-btn-border">
+                  <span class="material-symbols-outlined icon-18">mic</span>
+              </button>
+            </form>
+          <button type="button" class="search-btn">
+            <span class="material-symbols-outlined icon-18">photo_camera</span>
+          </button>
+        </div>
+
+      </div>
+      <div class="header-right">
+        <a href="#" class="wishlist-btn" data-path="wishlist">
+          <span class="material-symbols-outlined">favorite</span>
+          <span class="badge">۴</span>
+        </a>
+        <a href="{% url 'order_page' %}" class="cart-btn" data-path="shopping-cart">
+          <span class="material-symbols-outlined">shopping_bag</span>
+          <span>سبد خرید</span>
+          {% if cart_count %}
+            <span class="cart-count">{{ cart_count|fa_digits }}</span>
+          {% endif %}
+        </a>
+        <div class="account-box">
+            {% if user.is_authenticated %}
+              <a href="{% url 'profile' %}" class="account-link" data-path="user-profile">
+                <span class="material-symbols-outlined person_icon">person</span>
+                <span>حساب کاربری</span>
+              </a>
+            {% else %}
+                <a href="{% url 'login_register' %}" class="account-link" data-path="user-profile">
+                <span class="material-symbols-outlined login_icon">login</span>
+                <span>ورود و ثبت نام</span>
+              </a>
+            {% endif %}
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="main-nav">
+      <a href="{% url 'produts_list' %}" data-path="digital-goods">همه محصولات</a>
+      <a href="#" data-path="fashion">گوشی های گیمینگ</a>
+      <a href="#" data-path="home-kitchen">عکاسی با موبایل</a>
+      <a href="#" data-path="beauty-health">اداپتور و کابل</a>
+      <a href="#" data-path="supermarket">انواع گوشی های ایفون</a>
+      <a href="#" data-path="super-deals">تخفیف‌ها و شگفت‌انگیزها</a>
+    </nav>
+
+  </div>
+</header>

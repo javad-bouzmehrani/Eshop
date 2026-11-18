@@ -1,0 +1,264 @@
+{% load static %}
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="shell-type" content="web_blank" />
+  <title>ویرایش اطلاعات حساب کاربری | بازار آنلاین</title>
+  <link rel="stylesheet" href="{% static 'change profile/style.css' %}" />
+</head>
+<body>
+
+  <div class="page">
+    <div class="container stack-lg">
+
+      <!-- نوار بالا -->
+      <header class="page-header">
+        <div class="page-header__start">
+          <a href="profile.html" class="back-btn" title="بازگشت به پروفایل" aria-label="بازگشت به پروفایل">
+            <span class="material-symbols-outlined icon-20" aria-hidden="true">arrow_forward</span>
+          </a>
+          <div>
+            <div class="page-header__title-row">
+              <h1>ویرایش اطلاعات حساب کاربری</h1>
+              <span class="verified-badge">
+                <span class="dot" aria-hidden="true"></span>
+                احراز هویت شده
+              </span>
+            </div>
+            <p class="page-header__subtitle">به‌روزرسانی مشخصات فردی، ارتباطی و جزئیات حساب</p>
+          </div>
+        </div>
+
+        <div class="page-header__actions">
+          <a href="profile.html" class="btn-link-cancel">انصراف</a>
+          <button type="submit" form="edit-profile-form" class="btn-save">
+            <span class="material-symbols-outlined icon-18" aria-hidden="true">check</span>
+            <span>ذخیره تغییرات</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- شبکه اصلی -->
+      <div class="content-grid">
+
+        <!-- ستون کناری: آواتار و امنیت -->
+        <aside class="aside-col stack-lg">
+
+          <!-- کارت آواتار -->
+          <div class="avatar-card">
+            <div class="avatar-card__cover" aria-hidden="true"></div>
+            <div class="avatar-card__body">
+
+              <div class="avatar-wrap">
+                <div class="avatar-img" id="avatarImg">
+                  <svg viewBox="0 0 100 100" role="img" aria-label="تصویر پروفایل کاربر">
+                    <defs>
+                      <linearGradient id="avGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#1e3a8a" />
+                        <stop offset="100%" stop-color="#00236f" />
+                      </linearGradient>
+                    </defs>
+                    <rect width="100" height="100" fill="url(#avGrad)" />
+                    <circle cx="50" cy="38" r="16" fill="#90a8ff" />
+                    <path d="M50 58c-16.5 0-29 10.5-31 25h62c-2-14.5-14.5-25-31-25z" fill="#90a8ff" />
+                  </svg>
+                </div>
+                <button type="button" class="avatar-edit-btn" id="avatarEditBtn" title="تغییر تصویر" aria-label="تغییر تصویر پروفایل">
+                  <span class="material-symbols-outlined icon-16" aria-hidden="true">photo_camera</span>
+                </button>
+              </div>
+
+              <input type="file" id="avatarFileInput" accept="image/*" hidden />
+
+              <h2 class="avatar-name">علیرضا کریمی</h2>
+              <span class="avatar-phone" dir="ltr">0912 345 6789</span>
+
+              <div class="avatar-actions">
+                <button type="button" class="btn-upload" id="avatarUploadBtn">
+                  <span class="material-symbols-outlined icon-16" aria-hidden="true">upload</span>
+                  <span>بارگذاری تصویر جدید</span>
+                </button>
+                <button type="button" class="btn-delete-avatar" id="avatarDeleteBtn" title="حذف تصویر" aria-label="حذف تصویر">
+                  <span class="material-symbols-outlined icon-18" aria-hidden="true">delete</span>
+                </button>
+              </div>
+              <p class="avatar-hint">فرمت‌های مجاز: JPG, PNG (حداکثر ۲ مگابایت)</p>
+
+            </div>
+          </div>
+
+          <!-- کارت امنیت -->
+          <div class="security-card">
+            <div class="security-card__head">
+              <span class="material-symbols-outlined icon-20 text-primary" aria-hidden="true">shield</span>
+              <span>امنیت حساب کاربری</span>
+            </div>
+
+            <div class="security-card__list">
+              <div class="security-item">
+                <div>
+                  <p class="security-item__title">تغییر کلمه عبور</p>
+                  <p class="security-item__sub">آخرین تغییر: ۳ ماه پیش</p>
+                </div>
+                <button type="button" class="security-item__action security-item__action--secondary"
+                        data-toast="فرم تغییر رمز عبور باز شد.">تغییر رمز</button>
+              </div>
+
+              <div class="security-item">
+                <div>
+                  <p class="security-item__title">ورود دو مرحله‌ای (SMS)</p>
+                  <p class="security-item__sub security-item__sub--active">فعال است</p>
+                </div>
+                <button type="button" class="security-item__action security-item__action--muted"
+                        data-toast="تنظیمات ورود دو مرحله‌ای">تنظیمات</button>
+              </div>
+            </div>
+          </div>
+
+        </aside>
+
+        <!-- ستون فرم -->
+        <main class="main-col">
+          <form id="edit-profile-form" class="stack-lg" method="post" action="" novalidate>
+              {% csrf_token %}
+
+              <!-- اطلاعات هویتی -->
+              <section class="section-card">
+                <div class="section-head">
+                  <span class="section-icon">
+                    <span class="material-symbols-outlined icon-18" aria-hidden="true">badge</span>
+                  </span>
+                  <div>
+                    <h3 class="section-title">اطلاعات هویتی</h3>
+                    <p class="section-subtitle">مشخصات منطبق با کارت شناسایی ملی</p>
+                  </div>
+                </div>
+
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="first_name" class="field__label">نام</label>
+                    {{ form.first_name }}
+                    {{ form.first_name.errors }}
+                  </div>
+
+                  <div class="field">
+                    <label for="last_name" class="field__label">نام خانوادگی</label>
+                    {{ form.last_name }}
+                    {{ form.last_name.errors }}
+                  </div>
+
+                  <div class="field">
+                    <div class="field__label-row">
+                      <label for="national_id" class="field__label">کد ملی</label>
+                      <span class="field__verified">
+                        <span class="material-symbols-outlined icon-14" aria-hidden="true">check_circle</span>
+                        تایید شده
+                      </span>
+                    </div>
+                    <div class="input-wrap">
+                      {{ form.national_id }}
+                      <span class="material-symbols-outlined input-icon" aria-hidden="true">lock</span>
+                    </div>
+                    <p class="field__hint">برای تغییر کد ملی با پشتیبانی تماس بگیرید.</p>
+                  </div>
+
+                  <div class="field">
+                    <label for="birth_date" class="field__label">تاریخ تولد</label>
+                    <div class="input-wrap">
+                      {{ form.birth_date }}
+                      <span class="material-symbols-outlined input-icon" aria-hidden="true">calendar_today</span>
+                    </div>
+                    {{ form.birth_date.errors }}
+                  </div>
+                </div>
+              </section>
+
+              <!-- اطلاعات ارتباطی -->
+              <section class="section-card">
+                <div class="section-head">
+                  <span class="section-icon">
+                    <span class="material-symbols-outlined icon-18" aria-hidden="true">contact_mail</span>
+                  </span>
+                  <div>
+                    <h3 class="section-title">اطلاعات ارتباطی</h3>
+                    <p class="section-subtitle">راه‌های اطلاع‌رسانی وضعیت سفارش‌ها و فاکتورها</p>
+                  </div>
+                </div>
+
+                <div class="form-grid">
+                  <div class="field">
+                    <div class="field__label-row">
+                      <label for="phone" class="field__label">شماره تلفن همراه</label>
+                      <button type="button" class="field__action" data-toast="فرم ویرایش شماره باز شد.">ویرایش شماره</button>
+                    </div>
+                    <div class="input-wrap">
+                      {{ form.phone }}
+                      <span class="material-symbols-outlined input-icon" aria-hidden="true">phone_iphone</span>
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label for="email" class="field__label">پست الکترونیک (ایمیل)</label>
+                    <div class="input-wrap">
+                      {{ form.email }}
+                      <span class="material-symbols-outlined input-icon" aria-hidden="true">mail</span>
+                    </div>
+                    {{ form.email.errors }}
+                  </div>
+                </div>
+              </section>
+
+              <!-- حساب بانکی -->
+              <section class="section-card">
+                <div class="section-head">
+                  <span class="section-icon section-icon--secondary">
+                    <span class="material-symbols-outlined icon-18" aria-hidden="true">account_balance_wallet</span>
+                  </span>
+                  <div>
+                    <h3 class="section-title">اطلاعات حساب بانکی (جهت بازگشت وجه)</h3>
+                    <p class="section-subtitle">شماره شبا و کارتی که به نام صاحب حساب باشد</p>
+                  </div>
+                </div>
+
+                <div class="stack-md">
+                  <div class="field">
+                    <label for="sheba" class="field__label">شماره شبا (IBAN)</label>
+                    <div class="input-wrap">
+                      <span class="sheba-prefix" dir="ltr">IR</span>
+                      {{ form.sheba }}
+                    </div>
+                    {{ form.sheba.errors }}
+                  </div>
+
+                  <div class="info-note">
+                    <span class="material-symbols-outlined icon-18 info-note__icon" aria-hidden="true">info</span>
+                    <p class="info-note__text">
+                      توجه: به منظور حفظ امنیت تراکنش‌های مالی، شماره شبای ثبت‌شده حتماً باید متعلق به نام دارنده حساب کاربری
+                      (<strong>{{ form.first_name.value }} {{ form.last_name.value }}</strong>) باشد.
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              <!-- دکمه‌های پایانی -->
+              <div class="form-actions">
+                <a href="{% url 'profile' %}" class="btn-cancel">انصراف</a>
+                <button type="submit" class="btn-submit">
+                  <span class="material-symbols-outlined icon-18" aria-hidden="true">save</span>
+                  <span>ذخیره کلیه تغییرات</span>
+                </button>
+              </div>
+          </form>
+        </main>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-host" id="toastHost" role="status" aria-live="polite"></div>
+
+  <script src="{% static 'change profile/script.js' %}"></script>
+</body>
+</html>

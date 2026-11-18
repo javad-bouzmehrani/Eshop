@@ -1,0 +1,88 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# =========================
+# Virtual environments
+# =========================
+.venv/
+venv/
+env/
+ENV/
+
+# =========================
+# Django - Database
+# =========================
+db.sqlite3
+db.sqlite3-journal
+*.sqlite3
+
+# =========================
+# Django - Collected static (خروجی collectstatic)
+# =========================
+static_admin/
+staticfiles/
+
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# IDE / Editors
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Generated / temp files
+# =========================
+project_structure.txt
+*.log
+logs/
+
+# =========================
+# Testing / Coverage
+# =========================
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# =========================
+# Type checkers / Linters
+# =========================
+.mypy_cache/
+.ruff_cache/
+
+# =========================
+# Node (اگر جایی npm استفاده شده)
+# =========================
+node_modules/
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/

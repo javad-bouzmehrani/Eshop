@@ -1,0 +1,351 @@
+{% load static %}
+<!doctype html>
+<html dir="rtl" lang="fa">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ورود و ثبت‌نام | بازار آنلاین پرشین</title>
+    <link rel="stylesheet" href="{% static 'auth/style.css' %}" />
+  </head>
+  <body>
+    <main class="page-main">
+      <div class="page-wrap">
+        <!-- ============ CONTAINER PANEL ============ -->
+        <div class="auth-panel">
+          <!-- ============ LEFT COLUMN: VISUAL SHOWCASE ============ -->
+          <aside class="showcase-col">
+            <!-- Ambient blobs -->
+            <div class="blob blob-top"></div>
+            <div class="blob blob-bottom"></div>
+
+            <!-- Brand badge -->
+            <div class="showcase-block">
+              <div class="brand-row">
+                <div class="brand-icon">
+                  <span
+                    class="material-symbols-outlined icon-fill text-headline-sm"
+                    >shopping_bag</span
+                  >
+                </div>
+                <div>
+                  <h2 class="text-headline-sm">بازار آنلاین پرشین</h2>
+                  <p class="text-label-md text-on-primary-container">
+                    جامع‌ترین پلتفرم خرید آنلاین
+                  </p>
+                </div>
+              </div>
+
+              <div class="showcase-headline">
+                <span class="trust-pill">
+                  <span
+                    class="material-symbols-outlined icon-16 icon-fill text-tertiary-fixed"
+                    >verified</span
+                  >
+                  خرید مطمئن و بی‌واسطه
+                </span>
+                <h1 class="text-headline-lg">
+                  دسترسی به هزاران کالا با بهترین قیمت و ضمانت
+                </h1>
+              </div>
+            </div>
+
+            <!-- Perks grid -->
+            <div class="perks">
+              <div class="perk">
+                <div class="perk-icon bg-secondary-container text-on-secondary">
+                  <span class="material-symbols-outlined text-title-md"
+                    >percent</span
+                  >
+                </div>
+                <div class="perk-text">
+                  <h4 class="text-title-md">تخفیف ویژه اولین خرید</h4>
+                  <p class="text-body-sm">
+                    تا سقف ۳۰۰ هزار تومان برای کاربران تازه عضو شده
+                  </p>
+                </div>
+              </div>
+
+              <div class="perk">
+                <div class="perk-icon bg-surface-container-lowest text-primary">
+                  <span
+                    class="material-symbols-outlined icon-fill text-title-md"
+                    >local_shipping</span
+                  >
+                </div>
+                <div class="perk-text">
+                  <h4 class="text-title-md">ارسال اکسپرس و آنی</h4>
+                  <p class="text-body-sm">
+                    تحویل بسته در کمترین زمان ممکن در سراسر کشور
+                  </p>
+                </div>
+              </div>
+
+              <div class="perk">
+                <div
+                  class="perk-icon bg-surface-container-lowest-half text-on-primary"
+                >
+                  <span class="material-symbols-outlined text-title-md"
+                    >loyalty</span
+                  >
+                </div>
+                <div class="perk-text">
+                  <h4 class="text-title-md">باشگاه وفاداری و کش‌بک</h4>
+                  <p class="text-body-sm">
+                    امتیاز، کوپن‌های ماهانه و هدایای ویژه اعضا
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Trust metrics -->
+            <div class="trust-row">
+              <div class="trust-users">
+                <div class="avatars">
+                  <span class="avatar bg-secondary-fixed">س.م</span>
+                  <span class="avatar bg-tertiary-fixed">ع.ر</span>
+                  <span class="avatar bg-primary-fixed">+۴k</span>
+                </div>
+                <span class="text-label-md">خانواده مشتریان فعال ما</span>
+              </div>
+              <div class="trust-support">
+                <span class="material-symbols-outlined icon-18"
+                  >support_agent</span
+                >
+                <span>پشتیبانی ۲۴/۷</span>
+              </div>
+            </div>
+          </aside>
+
+          <!-- ============ RIGHT COLUMN: AUTH FORMS ============ -->
+          <section class="forms-col">
+            <!-- Top bar -->
+            <div class="forms-topbar">
+              <a href="#" class="back-link">
+                <span class="material-symbols-outlined icon-18 back-arrow"
+                  >arrow_forward</span
+                >
+                <span>بازگشت به فروشگاه</span>
+              </a>
+              <div class="ssl-badge">
+                <span class="ssl-dot"></span>
+                <span class="text-label-sm text-on-surface-variant"
+                  >ورود امن رمزنگاری‌شده (SSL)</span
+                >
+              </div>
+            </div>
+
+            <div class="forms-inner">
+              <!-- Tab nav -->
+              <div class="tab-nav">
+                <button
+                  class="auth-tab {% if active_tab == 'login' %}active{% endif %}"
+                  id="tab-login"
+                  type="button"
+                  aria-selected="{% if active_tab == 'login' %}true{% else %}false{% endif %}"
+                >
+                  <span class="material-symbols-outlined icon-18">login</span>
+                  <span>ورود به حساب</span>
+                </button>
+                <button
+                  class="auth-tab {% if active_tab == 'register' %}active{% endif %}"
+                  id="tab-register"
+                  type="button"
+                  aria-selected="{% if active_tab == 'register' %}true{% else %}false{% endif %}"
+                >
+                  <span class="material-symbols-outlined icon-18"
+                    >person_add</span
+                  >
+                  <span>ثبت‌نام جدید</span>
+                </button>
+              </div>
+
+              <!-- ============ LOGIN ============ -->
+              <div
+                class="form-section {% if active_tab != 'login' %}hidden{% endif %}"
+                id="section-login"
+              >
+                <div class="form-headline">
+                  <h3 class="text-headline-sm">خوش آمدید!</h3>
+                  <p class="text-body-md text-on-surface-variant">
+                    برای خرید سریع‌تر و پیگیری سفارشات وارد حساب خود شوید.
+                  </p>
+                </div>
+
+                <form class="auth-form" method="post" autocomplete="on" novalidate>
+                  {% csrf_token %}
+
+                  {% if message %}
+                    <div class="alert-message">{{ message }}</div>
+                  {% endif %}
+
+                  <div class="field">
+                    <label for="{{ login_form.username.id_for_label }}" class="text-label-lg">
+                      شماره همراه
+                    </label>
+                    <div class="input-wrap">
+                      {{ login_form.username }}
+                      {% if login_form.username.errors %}
+                        <span class="field-error">{{ login_form.username.errors.0 }}</span>
+                      {% endif %}
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <div class="field-row">
+                      <label for="{{ login_form.password.id_for_label }}" class="text-label-lg">
+                        کلمه عبور
+                      </label>
+                      <a href="#" class="text-label-md text-secondary-container link-forgot">
+                        رمز را فراموش کرده‌اید؟
+                      </a>
+                    </div>
+                    <div class="input-wrap">
+                      {{ login_form.password }}
+                      <button
+                        type="button"
+                        class="input-icon-btn"
+                        data-toggle-pass="{{ login_form.password.id_for_label }}"
+                        aria-label="نمایش رمز عبور"
+                      >
+                        <span class="material-symbols-outlined icon-20">visibility</span>
+                      </button>
+                      {% if login_form.password.errors %}
+                        <span class="field-error">{{ login_form.password.errors.0 }}</span>
+                      {% endif %}
+                    </div>
+                  </div>
+
+                  <div class="remember-row">
+                    <label class="checkbox-label">
+                      <input type="checkbox" name="remember_me" checked class="checkbox" />
+                      <span class="text-label-md text-on-surface-variant">
+                        مرا در این دستگاه به خاطر بسپار
+                      </span>
+                    </label>
+                  </div>
+
+                  <button type="submit" name="login_submit" value="1" class="submit-btn submit-gradient">
+                    <span>ورود به حساب</span>
+                    <span class="material-symbols-outlined icon-20">arrow_back</span>
+                  </button>
+                </form>
+              </div>
+
+              <!-- ============ REGISTER ============ -->
+              <div
+                class="form-section {% if active_tab != 'register' %}hidden{% endif %}"
+                id="section-register"
+              >
+                <div class="form-headline">
+                  <h3 class="text-headline-sm">عضویت در خانواده بازار آنلاین</h3>
+                  <p class="text-body-md text-on-surface-variant">
+                    با افتتاح حساب، از بن خرید ۳۰۰ هزار تومانی بهره‌مند شوید.
+                  </p>
+                </div>
+
+                <form class="auth-form" method="post" action="#" autocomplete="on" novalidate>
+                  {% csrf_token %}
+
+                  <div class="field">
+                    <label for="{{ register_form.full_name.id_for_label }}" class="text-label-lg">نام و نام خانوادگی</label>
+                    <div class="input-wrap">
+                      {{ register_form.full_name }}
+                      <span class="material-symbols-outlined icon-20 input-icon">badge</span>
+                    </div>
+                    {% if register_form.full_name.errors %}
+                      <div class="field-error">{{ register_form.full_name.errors.0 }}</div>
+                    {% endif %}
+                  </div>
+
+                  <div class="field">
+                    <label for="{{ register_form.phone.id_for_label }}" class="text-label-lg">شماره موبایل</label>
+                    <div class="input-wrap">
+                      {{ register_form.phone }}
+                      <span class="material-symbols-outlined icon-20 input-icon phone_ico">phone_iphone</span>
+                    </div>
+                    {% if register_form.phone.errors %}
+                      <div class="field-error">{{ register_form.phone.errors.0 }}</div>
+                    {% endif %}
+                  </div>
+
+                  <div class="field">
+                    <label for="{{ register_form.password.id_for_label }}" class="text-label-lg">تعیین کلمه عبور</label>
+                    <div class="input-wrap">
+                      {{ register_form.password }}
+                      <button
+                        type="button"
+                        class="input-icon-btn"
+                        data-toggle-pass="{{ register_form.password.id_for_label }}"
+                        aria-label="نمایش رمز عبور"
+                      >
+                        <span class="material-symbols-outlined icon-20">visibility</span>
+                      </button>
+                    </div>
+                    {% if register_form.password.errors %}
+                      <div class="field-error">{{ register_form.password.errors.0 }}</div>
+                    {% endif %}
+                  </div>
+
+                  <div class="agree-row">
+                    <label class="checkbox-label items-start">
+                      {{ register_form.agree }}
+                      <span class="text-body-sm text-on-surface-variant">
+                        کلیه
+                        <a href="#" class="text-primary underline">قوانین و مقررات بازار آنلاین</a>
+                        و سیاست‌های حفظ حریم شخصی را مطالعه کرده و می‌پذیرم.
+                      </span>
+                    </label>
+                    {% if register_form.agree.errors %}
+                      <div class="field-error">{{ register_form.agree.errors.0 }}</div>
+                    {% endif %}
+                  </div>
+
+                  <button type="submit" name="register_submit" value="1" class="submit-btn submit-primary">
+                    <span>تکمیل ثبت‌ نام</span>
+                    <span class="material-symbols-outlined icon-20">card_giftcard</span>
+                  </button>
+                </form>
+              </div>
+
+              <!-- ============ SOCIAL LOGIN ============ -->
+              <div class="social-block">
+                <div class="divider">
+                  <div class="divider-line"></div>
+                  <span class="text-label-sm text-outline">یا ادامه دهید از طریق</span>
+                  <div class="divider-line"></div>
+                </div>
+
+                <div class="social-grid">
+                  <button type="button" class="social-btn">
+                    <svg class="social-svg" viewBox="0 0 24 24">
+                      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+                      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+                      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"></path>
+                      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"></path>
+                    </svg>
+                    <span>ورود با حساب گوگل</span>
+                  </button>
+                  <button type="button" class="social-btn">
+                    <span class="material-symbols-outlined icon-20 text-primary">storefront</span>
+                    <span>ورود فروشندگان بازار</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Legal footer -->
+            <div class="legal-footer">
+              <p class="text-body-sm text-outline">
+                استفاده از خدمات بازار آنلاین به منزله تایید کلیه
+                <a href="#" class="legal-link">شرایط حریم خصوصی</a>
+                و قوانین تجارت الکترونیک است.
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <script src="{% static 'auth/script.js' %}"></script>
+  </body>
+</html>

@@ -1,0 +1,1020 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load static price_tags %}
+{% block title %}{{ product.title }}{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="{% static 'product_detail/style.css' %}">
+{% endblock %}
+{% block content %}
+    <main class="page">
+      <div class="container">
+        <!-- ===================== PRODUCT GRID ===================== -->
+        <div class="product-grid">
+          <!-- ---------- 1) Gallery ---------- -->
+          <section class="col-gallery">
+            <div class="gallery-card">
+              <div class="gallery-actions">
+                <span class="badge-off">تخفیف ۱۰٪</span>
+              </div>
+
+              <div class="main-image-wrap">
+                <img
+                  id="main-product-img"
+                  src="{{ product.image.url }}"
+                  alt="{{ product.title }}"
+                />
+              </div>
+
+              <div class="thumbs">
+                {# ---------- ۱) تصویر اصلی محصول ---------- #}
+                <button
+                  class="thumb-btn is-active"
+                  type="button"
+                  aria-label="تصویر اصلی"
+                  data-src="{{ product.image.url }}"
+                  onclick="switchImage(this)"
+                >
+                  <img src="{{ product.image.url }}" alt="{{ product.title }}" />
+                </button>
+
+                {# ---------- ۲ و ۳) دو تصویر اول گالری + کاشی +N ---------- #}
+                {% for item in gallery %}
+                  {% if forloop.counter <= 2 %}
+                    <button
+                      class="thumb-btn"
+                      type="button"
+                      aria-label="{{ item.title }}"
+                      data-src="{{ item.image.url }}"
+                      onclick="switchImage(this)"
+                    >
+                      <img src="{{ item.image.url }}" alt="{{ item.title }}" />
+                    </button>
+                  {% elif forloop.counter == 3 %}
+                    <button
+                      class="thumb-btn thumb-more"
+                      type="button"
+                      aria-label="همه تصاویر"
+                      data-src="{{ item.image.url }}"
+                      onclick="openGalleryModal(event)"
+                    >
+                      <img src="{{ item.image.url }}" alt="{{ item.title }}" />
+                      <span>+{{ gallery|length|add:"-2" }} تصویر</span>
+                    </button>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+            <!-- ================= GALLERY LIGHTBOX ================= -->
+            <div
+              id="gallery-modal"
+              class="gallery-modal"
+              onclick="if (event.target === this) closeGalleryModal()"
+            >
+              <div class="gallery-modal-inner">
+                <button
+                  class="gallery-modal-close"
+                  type="button"
+                  aria-label="بستن"
+                  onclick="closeGalleryModal()"
+                >×</button>
+
+                <h3 class="text-title-lg" style="margin-bottom: 1rem;">همه تصاویر محصول</h3>
+
+                <div class="gallery-modal-grid">
+                  {# تصویر اصلی #}
+                  <img
+                    src="{{ product.image.url }}"
+                    alt="{{ product.title }}"
+                    onclick="pickGalleryImage('{{ product.image.url }}')"
+                  />
+                  {# همه تصاویر گالری #}
+                  {% for item in gallery %}
+                    <img
+                      src="{{ item.image.url }}"
+                      alt="{{ item.title }}"
+                      onclick="pickGalleryImage('{{ item.image.url }}')"
+                    />
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="trust-badges">
+              <div class="trust-item">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4Z" />
+                  <path d="m9 12 2 2 4-4" />
+                </svg>
+                <span>اصالت ۱۰۰٪</span>
+              </div>
+
+              <div class="trust-divider"></div>
+
+              <div class="trust-item">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                >
+                  <path d="M21 12a9 9 0 1 1-3-6.7" />
+                  <path d="M21 3v6h-6" />
+                </svg>
+                <span>۷ روز بازگشت</span>
+              </div>
+
+              <div class="trust-divider"></div>
+
+              <div class="trust-item">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                >
+                  <path d="M1 4h13v12H1z" />
+                  <path d="M14 8h4l3 3v5h-7z" />
+                  <circle cx="5.5" cy="18.5" r="2" />
+                  <circle cx="17.5" cy="18.5" r="2" />
+                </svg>
+                <span>ارسال امن</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- ---------- 2) Info ---------- -->
+          <section class="col-info">
+            <div class="product-head">
+              <span class="badge-chip">پرچمدار برتر ۲۰۲۴</span>
+              <h1 class="product-title">
+                {{ product.title }}
+              </h1>
+              <p class="product-title-en">
+                Samsung Galaxy S26 Ultra 5G Dual SIM 12GB RAM
+              </p>
+            </div>
+
+            <div class="rating-row">
+              <div class="rating-score">
+                <svg
+                  class="star star-lg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1L12 2Z"
+                  />
+                </svg>
+                <span class="score">۴.۶</span>
+                <span class="out-of">(از ۵)</span>
+              </div>
+
+              <div class="rating-link">
+                <span class="dot"></span>
+                <a href="#reviews">۳۴۲ نظر کاربران</a>
+              </div>
+
+              <div class="rating-link">
+                <span class="dot"></span>
+                <a href="#">۱۱۸ پرسش و پاسخ</a>
+              </div>
+
+              <div class="satisfaction">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M7 22V11l4.5-8a2 2 0 0 1 2.7 1.3L15 8h4.3a2 2 0 0 1 2 2.4l-1.3 7A2 2 0 0 1 18 19H7Z"
+                  />
+                </svg>
+                <span>۹۲٪ رضایت خریداران</span>
+              </div>
+            </div>
+
+            <!-- Colors -->
+            <div class="option-block">
+              <div class="option-head">
+                <span class="option-label">
+                  انتخاب رنگ:
+                  <span class="option-value" id="selected-color-name"
+                    >خاکستری تیتانیوم (Titanium Gray)</span
+                  >
+                </span>
+              </div>
+
+              <div class="option-list">
+                <button
+                  class="color-btn is-active"
+                  type="button"
+                  onclick="
+                    selectColor(this, 'خاکستری تیتانیوم (Titanium Gray)')
+                  "
+                >
+                  <span class="color-dot" style="background: #656360"></span>
+                  <span class="txt">خاکستری</span>
+                </button>
+
+                <button
+                  class="color-btn"
+                  type="button"
+                  onclick="selectColor(this, 'مشکی تیتانیوم (Titanium Black)')"
+                >
+                  <span class="color-dot" style="background: #202022"></span>
+                  <span class="txt">مشکی</span>
+                </button>
+
+                <button
+                  class="color-btn"
+                  type="button"
+                  onclick="selectColor(this, 'بنفش تیتانیوم (Titanium Violet)')"
+                >
+                  <span class="color-dot" style="background: #41394c"></span>
+                  <span class="txt">بنفش</span>
+                </button>
+
+                <button
+                  class="color-btn"
+                  type="button"
+                  onclick="selectColor(this, 'زرد کهربایی (Titanium Yellow)')"
+                >
+                  <span class="color-dot" style="background: #e6dcbe"></span>
+                  <span class="txt">زرد</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Capacity -->
+            <div class="option-block">
+              <span class="option-label">حافظه داخلی و رم:</span>
+
+              <div class="capacity-grid">
+                <button
+                  class="capacity-btn is-active"
+                  type="button"
+                  onclick="selectCapacity(this)"
+                >
+                  <span class="cap-title">۲۵۶ گیگابایت</span>
+                  <span class="cap-sub">رم ۱۲ گیگابایت</span>
+                </button>
+
+                <button
+                  class="capacity-btn"
+                  type="button"
+                  onclick="selectCapacity(this)"
+                >
+                  <span class="cap-title">۵۱۲ گیگابایت</span>
+                  <span class="cap-sub">رم ۱۲ گیگابایت</span>
+                </button>
+
+                <button
+                  class="capacity-btn"
+                  type="button"
+                  onclick="selectCapacity(this)"
+                >
+                  <span class="cap-title">۱ ترابایت</span>
+                  <span class="cap-sub">رم ۱۲ گیگابایت</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Key specs -->
+            <div class="key-specs">
+              <span class="key-specs-title">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                >
+                  <path d="M4 6h16M8 12h8M11 18h2" />
+                </svg>
+                ویژگی‌های برجسته محصول
+              </span>
+
+              <div class="key-specs-grid">
+                <div class="key-spec-item">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <rect x="6" y="2" width="12" height="20" rx="2" />
+                    <path d="M11 18h2" />
+                  </svg>
+                  <span>نمایشگر ۶.۸ اینچی Dynamic LTPO AMOLED 2X</span>
+                </div>
+
+                <div class="key-spec-item">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <rect x="6" y="6" width="12" height="12" rx="2" />
+                    <path
+                      d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"
+                    />
+                  </svg>
+                  <span>تراشه Snapdragon 8 Gen 3 (۴ نانومتری)</span>
+                </div>
+
+                <div class="key-spec-item">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M3 8h3l2-3h8l2 3h3v12H3z" />
+                    <circle cx="12" cy="13" r="4" />
+                  </svg>
+                  <span>دوربین اصلی ۲۰۰ مگاپیکسل مجهز به هوش مصنوعی</span>
+                </div>
+
+                <div class="key-spec-item">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="2" y="7" width="17" height="10" rx="2" />
+                    <path d="M22 11v2" />
+                    <path d="m11 9-2 3h3l-2 3" />
+                  </svg>
+                  <span>باتری ۵۰۰۰ میلی‌آمپر با شارژ فوق‌سریع ۴۵ وات</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ---------- 3) Buy box ---------- -->
+          <aside class="col-buy">
+            <div class="buy-box">
+              <div class="buy-head">
+                <span class="buy-head-title">فروش و ارسال کالا</span>
+                <svg
+                  class="buy-head-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                >
+                  <path d="m9 12 2 2 4-4" />
+                  <circle cx="12" cy="12" r="9" />
+                </svg>
+              </div>
+
+              <div class="seller">
+                <div class="seller-row">
+                  <div class="seller-name">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M3 9h18l-1.5 11h-15z" />
+                      <path d="M3 9 5 4h14l2 5" />
+                    </svg>
+                    <span>بازار آنلاین (رسمی)</span>
+                  </div>
+                  <span class="tag-best">برگزیده</span>
+                </div>
+
+                <div class="seller-meta">
+                  <span class="positive">۹۵.۴٪ رضایت</span>
+                  <span class="sep">|</span>
+                  <span>عملکرد: عالی</span>
+                </div>
+              </div>
+
+              <div class="buy-line">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-4Z" />
+                  <path
+                    d="M12 15s-3-1.8-3-3.8A1.7 1.7 0 0 1 12 10a1.7 1.7 0 0 1 3 1.2c0 2-3 3.8-3 3.8Z"
+                  />
+                </svg>
+                <span>گارانتی ۱۸ ماهه همراه‌سرویس خاورمیانه</span>
+              </div>
+
+              <div class="buy-line">
+                <svg
+                  class="icon-secondary"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                >
+                  <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" />
+                </svg>
+                <span>موجود در انبار تهران - ارسال امروز</span>
+              </div>
+
+              <div class="buy-divider"></div>
+
+              <div class="price-box">
+                <div class="price-old-row">
+                  <span class="badge-off-sm">۱۰٪</span>
+                  <span class="price-old">{{ product.old_price|toman }}</span>
+                </div>
+                <div class="price-new-row">
+                  <span class="price-new">{{ product.price|toman }}</span>
+                  <span class="price-unit">تومان</span>
+                </div>
+              </div>
+
+                <div class="buy-actions">
+                  <form action="/add_new_order" method="post" id="add-to-cart-form">
+                    {% csrf_token %}
+                    {{ new_order_from.product_id }}
+
+                    <div class="qty-box">
+                      <button class="qty-btn" type="button" aria-label="افزایش"
+                              onclick="changeQty(1)">+</button>
+
+                      {{ new_order_from.count }}
+
+                      <button class="qty-btn" type="button" aria-label="کاهش"
+                              onclick="changeQty(-1)">−</button>
+                    </div>
+
+                    <button class="btn-add-cart" id="btn-add-cart" type="submit">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="2" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1.5" />
+                        <circle cx="19" cy="21" r="1.5" />
+                        <path d="M2 3h3l2.7 12.4a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L22 7H6" />
+                      </svg>
+                      <span>افزودن به سبد</span>
+                    </button>
+                  </form>
+                </div>
+
+              <div class="club-points">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                >
+                  <path d="M6 2h12l1 6H5z" />
+                  <path d="M5 8h14v14H5z" />
+                  <path d="M9 8v14M15 8v14" />
+                </svg>
+                <span>با این خرید ۵۰ امتیاز باشگاه مشتریان کسب کنید.</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <!-- ===================== TABS ===================== -->
+        <section class="tabs-section" id="reviews">
+          <div class="tabs-card">
+            <div class="tab-headers">
+              <button
+                class="tab-btn is-active"
+                type="button"
+                onclick="switchTab(0)"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                >
+                  <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
+                </svg>
+                <span>مشخصات فنی کالا</span>
+              </button>
+
+              <button class="tab-btn" type="button" onclick="switchTab(1)">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9 9 0 0 1-4-.9L3 21l1.9-5A8.4 8.4 0 0 1 4 11.5a8.4 8.4 0 0 1 9-8.5 8.4 8.4 0 0 1 8 8.5Z"
+                  />
+                </svg>
+                <span>دیدگاه و نظرات خریداران</span>
+                <span class="tab-count">۳۴۲</span>
+              </button>
+            </div>
+
+            <!-- ---------- Tab 1 : Specs ---------- -->
+            <div class="tab-pane is-active" id="tab-content-0">
+              <h4 class="pane-title">مشخصات کامل فنی</h4>
+
+              <div class="spec-table">
+                <div class="spec-row">
+                  <span class="label">ابعاد و وزن</span>
+                  <span class="value"
+                    >۱۶۲.۳ در ۷۹ در ۸.۶ میلی‌متر | ۲۳۲ گرم با فریم
+                    تیتانیوم</span
+                  >
+                </div>
+
+                <div class="spec-row">
+                  <span class="label">نوع صفحه‌نمایش</span>
+                  <span class="value"
+                    >Dynamic LTPO AMOLED 2X, ۱۲۰ هرتز, HDR10+, نرخ روشنایی تا
+                    ۲۶۰۰ نیت</span
+                  >
+                </div>
+
+                <div class="spec-row">
+                  <span class="label">رزولوشن</span>
+                  <span class="value"
+                    >۱۴۴۰ در ۳۱۲۰ پیکسل (۵۰۵ پیکسل در اینچ تراکم)</span
+                  >
+                </div>
+
+                <div class="spec-row">
+                  <span class="label">سیستم عامل پیش‌فرض</span>
+                  <span class="value"
+                    >اندروید ۱۴ با رابط کاربری One UI 6.1 و پشتیبانی ۷
+                    ساله</span
+                  >
+                </div>
+
+                <div class="spec-row">
+                  <span class="label">تراشه پردازنده</span>
+                  <span class="value"
+                    >Qualcomm SM8650-AC Snapdragon 8 Gen 3 (4 nm)</span
+                  >
+                </div>
+
+                <div class="spec-row">
+                  <span class="label">دوربین‌های پشت</span>
+                  <span class="value"
+                    >چهارگانه: ۲۰۰ مگاپیکسل (اصلی) + ۵۰ مگاپیکسل (پریسکوپ
+                    تله‌فوتو 5x) + ۱۰ مگاپیکسل (تله‌فوتو 3x) + ۱۲ مگاپیکسل
+                    (فوق‌عریض)</span
+                  >
+                </div>
+
+                <div class="spec-row">
+                  <span class="label">دوربین سلفی</span>
+                  <span class="value"
+                    >۱۲ مگاپیکسل مجهز به Dual Pixel PDAF با فیلمبرداری 4K
+                    60fps</span
+                  >
+                </div>
+
+                <div class="spec-row">
+                  <span class="label">باتری و سرعت شارژ</span>
+                  <span class="value"
+                    >۵۰۰۰ میلی‌آمپرساعت، شارژ سیمی ۴۵ وات (۶۵٪ در ۳۰ دقیقه)،
+                    شارژ بی‌سیم ۱۵ وات</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- ---------- Tab 2 : Reviews ---------- -->
+            <div class="tab-pane" id="tab-content-1">
+              <div class="reviews-layout">
+                <!-- Summary -->
+                <div class="rating-summary">
+                  <div class="rating-summary-top">
+                    <span class="big-score">۴.۶</span>
+                    <span class="score-out">از ۵</span>
+                  </div>
+
+                  <div class="stars-row">
+                    <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1L12 2Z"
+                      />
+                    </svg>
+                    <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1L12 2Z"
+                      />
+                    </svg>
+                    <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1L12 2Z"
+                      />
+                    </svg>
+                    <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1L12 2Z"
+                      />
+                    </svg>
+                    <svg class="star star-empty" viewBox="0 0 24 24">
+                      <path
+                        d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1L12 2Z"
+                      />
+                    </svg>
+                    <span class="star-count">(۳۴۲ دیدگاه ثبت‌شده)</span>
+                  </div>
+
+                  <div class="progress-list">
+                    <div class="progress-row">
+                      <span class="progress-label">۵ ستاره</span>
+                      <div class="progress-track">
+                        <div class="progress-fill" style="width: 78%"></div>
+                      </div>
+                      <span class="progress-percent">۷۸٪</span>
+                    </div>
+
+                    <div class="progress-row">
+                      <span class="progress-label">۴ ستاره</span>
+                      <div class="progress-track">
+                        <div class="progress-fill" style="width: 14%"></div>
+                      </div>
+                      <span class="progress-percent">۱۴٪</span>
+                    </div>
+
+                    <div class="progress-row">
+                      <span class="progress-label">۳ ستاره</span>
+                      <div class="progress-track">
+                        <div class="progress-fill" style="width: 5%"></div>
+                      </div>
+                      <span class="progress-percent">۵٪</span>
+                    </div>
+
+                    <div class="progress-row">
+                      <span class="progress-label">۲ ستاره</span>
+                      <div class="progress-track">
+                        <div class="progress-fill" style="width: 2%"></div>
+                      </div>
+                      <span class="progress-percent">۲٪</span>
+                    </div>
+
+                    <div class="progress-row">
+                      <span class="progress-label">۱ ستاره</span>
+                      <div class="progress-track">
+                        <div class="progress-fill" style="width: 1%"></div>
+                      </div>
+                      <span class="progress-percent">۱٪</span>
+                    </div>
+                  </div>
+
+                  <button
+                    class="btn-write-review"
+                    type="button"
+                    onclick="openReviewModal()"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M12 20h9" />
+                      <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                    </svg>
+                    <span>ثبت نظر شما درباره این کالا</span>
+                  </button>
+                </div>
+
+                <!-- Feed -->
+                <div class="reviews-feed">
+                  <div class="reviews-feed-head">
+                    <span class="reviews-feed-title"
+                      >دیدگاه‌های برگزیده خریداران</span
+                    >
+                    <div class="sort-box">
+                      <span>مرتب‌سازی:</span>
+                      <button type="button" class="is-active">جدیدترین</button>
+                      <span>|</span>
+                      <button type="button">مفیدترین</button>
+                    </div>
+                  </div>
+
+                  <!-- Review 1 -->
+                  <div class="review-card">
+                    <div class="review-head">
+                      <div class="review-user">
+                        <div class="avatar avatar-primary">ع‌ر</div>
+                        <div>
+                          <span class="review-name">علیرضا رضایی</span>
+                          <span class="tag-buyer">خریدار کالا</span>
+                        </div>
+                      </div>
+                      <span class="review-date">۲ روز پیش</span>
+                    </div>
+
+                    <div class="review-stars">
+                      <svg
+                        class="star star-sm"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        <path
+                          d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1L12 2Z"
+                        />
+                      </svg>
+                      <svg
+                        class="star star-sm"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        <path
+                          d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1L12 2Z"
+                        />
+                      </svg>
+                      <svg
+                        class="star star-sm"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        <path
+                          d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1L12 2Z"
+                        />
+                      </svg>
+                      <svg
+                        class="star star-sm"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        <path
+                          d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1L12 2Z"
+                        />
+                      </svg>
+                      <svg
+                        class="star star-sm"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        <path
+                          d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1L12 2Z"
+                        />
+                      </svg>
+                    </div>
+
+                    <p class="review-text">
+                      روشنایی صفحه زیر آفتاب واقعاً تحسین‌برانگیزه، شیشه بدون
+                      انعکاس حس نوینی میده. قلم دستگاه برای نوت‌برداری توی جلسات
+                      خیلی کارآمده و باطری به راحتی ۱.۵ روز کاری پاسخگوی کار
+                      سنگین هست.
+                    </p>
+
+                    <div class="review-foot">
+                      <span>آیا این نظر مفید بود؟</span>
+                      <button type="button">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linejoin="round"
+                        >
+                          <path
+                            d="M7 22V11l4.5-8a2 2 0 0 1 2.7 1.3L15 8h4.3a2 2 0 0 1 2 2.4l-1.3 7A2 2 0 0 1 18 19H7Z"
+                          />
+                        </svg>
+                        <span>۴۳</span>
+                      </button>
+                      <button type="button">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linejoin="round"
+                        >
+                          <path
+                            d="M17 2v11l-4.5 8a2 2 0 0 1-2.7-1.3L9 16H4.7a2 2 0 0 1-2-2.4l1.3-7A2 2 0 0 1 6 5h11Z"
+                          />
+                        </svg>
+                        <span>۲</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Review 2 -->
+                  <div class="review-card">
+                    <div class="review-head">
+                      <div class="review-user">
+                        <div class="avatar avatar-secondary">م‌ن</div>
+                        <div>
+                          <span class="review-name">مریم نجفی</span>
+                          <span class="tag-buyer">خریدار کالا</span>
+                        </div>
+                      </div>
+                      <span class="review-date">۱ هفته پیش</span>
+                    </div>
+
+                    <div class="review-stars">
+                      <svg
+                        class="star star-sm"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        <path
+                          d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1L12 2Z"
+                        />
+                      </svg>
+                      <svg
+                        class="star star-sm"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        <path
+                          d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1L12 2Z"
+                        />
+                      </svg>
+                      <svg
+                        class="star star-sm"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        <path
+                          d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1L12 2Z"
+                        />
+                      </svg>
+                      <svg
+                        class="star star-sm"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        <path
+                          d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1L12 2Z"
+                        />
+                      </svg>
+                      <svg class="star star-sm star-empty" viewBox="0 0 24 24">
+                        <path
+                          d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1L12 2Z"
+                        />
+                      </svg>
+                    </div>
+
+                    <p class="review-text">
+                      دوربین در شب عکس‌های خارق‌العاده‌ای ثبت می‌کنه. تنها مسئله
+                      نبود شارژر توی جعبه بود که مجبور شدم شارژر ۴۵ وات اصلی رو
+                      جداگانه از بازار آنلاین سفارش بدم. در کل از خریدم راضیم.
+                    </p>
+
+                    <div class="review-foot">
+                      <span>آیا این نظر مفید بود؟</span>
+                      <button type="button">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linejoin="round"
+                        >
+                          <path
+                            d="M7 22V11l4.5-8a2 2 0 0 1 2.7 1.3L15 8h4.3a2 2 0 0 1 2 2.4l-1.3 7A2 2 0 0 1 18 19H7Z"
+                          />
+                        </svg>
+                        <span>۱۸</span>
+                      </button>
+                      <button type="button">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linejoin="round"
+                        >
+                          <path
+                            d="M17 2v11l-4.5 8a2 2 0 0 1-2.7-1.3L9 16H4.7a2 2 0 0 1-2-2.4l1.3-7A2 2 0 0 1 6 5h11Z"
+                          />
+                        </svg>
+                        <span>۱</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== RELATED ===================== -->
+        <section class="related-section">
+          <div class="related-head">
+            <div class="related-title">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M12 2 14.9 8.6 22 9.3l-5.3 4.8 1.5 7L12 17.6 5.8 21l1.5-7L2 9.3l7.1-.7L12 2Z"
+                />
+              </svg>
+              <h2>محصولات مشابه و پرطرفدار</h2>
+            </div>
+
+            <div class="related-nav">
+              <button
+                type="button"
+                aria-label="بعدی"
+                onclick="scrollRelated(-1)"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                aria-label="قبلی"
+                onclick="scrollRelated(1)"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+            <div class="related-track" id="related-slider">
+              {% for item in related_products %}
+                <article class="related-card">
+                  <a href="{{ item.product_detail_url }}" class="related-link">
+
+                    <div class="related-media">
+                        {% if item.discount %}
+                          <span class="badge-off-sm">{{ item.discount|fa_digits }}٪</span>
+                        {% endif %}
+                      {% if item.image %}
+                        <img src="{{ item.image.url }}" alt="{{ item.title }}" />
+                      {% endif %}
+                    </div>
+
+                    <div class="related-body">
+                      {% with first_cat=item.cetegories.first %}
+                        {% if first_cat %}
+                          <span class="related-brand">{{ first_cat.name }}</span>
+                        {% endif %}
+                      {% endwith %}
+                      <h3>{{ item.title }}</h3>
+                    </div>
+
+                    <div class="related-price">
+                      {% if item.old_price %}
+                        <span class="old">{{ item.old_price|toman }} تومان</span>
+                      {% endif %}
+                      <div class="new-row">
+                        <span class="new">{{ item.price|toman }}</span>
+                        <span class="unit">تومان</span>
+                      </div>
+                    </div>
+
+                  </a>
+                </article>
+              {% empty %}
+                <p class="related-empty">محصول مشابهی یافت نشد.</p>
+              {% endfor %}
+            </div>
+        </section>
+      </div>
+    </main>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'product_detail/script.js' %}"></script>
+{% endblock %}

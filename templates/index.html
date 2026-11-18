@@ -1,0 +1,511 @@
+{% extends 'Base/base.html' %}
+{% load static price_tags %}
+{% load static %}
+{% block title %}{{ setting.site_name }}{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <link rel="stylesheet" href="{% static 'home_page/style.css' %}">
+  <link rel="icon" type="image/png" href="{{ setting.logo.url }}">
+{% endblock %}
+
+{% block content %}
+
+<main class="site-main">
+
+  <!-- ============ HERO BENTO ============ -->
+  <section class="section hero-section">
+    <div class="hero-grid">
+     <!-- Main featured banner -->
+        <div class="hero-main group swiper hero-swiper">
+          <div class="swiper-wrapper">
+            {% for slider in sliders %}
+              <div class="swiper-slide">
+                <div class="hero-bg">
+                  <div class="hero-bg-img bg-cover" style="background-image:url('{{ slider.image.url }}')"></div>
+                  <div class="hero-overlay-left"></div>
+                </div>
+                <div class="hero-content">
+                  <div>
+                    <span class="hero-badge">
+                      <span class="material-symbols-outlined icon-15">campaign</span>
+                      پیشنهاد ویژه
+                    </span>
+                    <h2 class="text-headline-lg">{{ slider.title }}</h2>
+                    <p class="hero-desc">{{ slider.description }}</p>
+                  </div>
+                  <div class="hero-cta">
+                    <a href="{{ slider.link }}" class="btn-primary">
+                      <span>مشاهده و خرید</span>
+                      <span class="material-symbols-outlined icon-20">arrow_back</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            {% empty %}
+              <div class="swiper-slide">
+                <div class="hero-bg">
+                  <div class="hero-bg-img bg-cover" style="background-image:url('{% static 'images/1.png' %}')"></div>
+                  <div class="hero-overlay-left"></div>
+                </div>
+                <div class="hero-content">
+                  <div>
+                    <h2 class="text-headline-lg">به فروشگاه ما خوش آمدید</h2>
+                    <p class="hero-desc">در حال حاضر اسلایدی برای نمایش وجود ندارد.</p>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="hero-slider-bar">
+            <div class="slider-dots swiper-pagination"></div>
+            <div class="slider-nav">
+              <button aria-label="قبلی" class="slider-btn hero-prev">
+                <span class="material-symbols-outlined icon-18">chevron_right</span>
+              </button>
+              <button aria-label="بعدی" class="slider-btn hero-next">
+                <span class="material-symbols-outlined icon-18">chevron_left</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Side promo tiles (داینامیک — دقیقاً با استایل استاتیک قبلی) -->
+        <div class="hero-side">
+          {% for promo in promos|slice:":2" %}
+            {% if forloop.counter0 == 0 %}
+              {# ===== کاشی اول ===== #}
+              <div class="side-tile group">
+                <div class="side-tile-bg bg-cover" style="background-image:url('{{ promo.image.url }}')"></div>
+                <div class="side-tile-overlay dark-gradient"></div>
+                <div class="side-tile-content inverse-text">
+                  <span class="tile-tag text-secondary-fixed">{{ promo.tag }}</span>
+                  <h3 class="text-title-lg">{{ promo.title }}</h3>
+                  <p class="text-body-sm">{{ promo.description }}</p>
+                </div>
+              </div>
+            {% else %}
+              {# ===== کاشی دوم ===== #}
+              <div class="side-tile group">
+                <div class="side-tile-bg bg-cover" style="background-image:url('{{ promo.image.url }}')"></div>
+                <div class="side-tile-overlay primary-gradient"></div>
+                <div class="side-tile-content on-primary">
+                  <span class="tile-tag text-tertiary-fixed">{{ promo.tag }}</span>
+                  <h3 class="text-title-lg">{{ promo.title }}</h3>
+                  <p class="text-body-sm">{{ promo.description }}</p>
+                </div>
+              </div>
+            {% endif %}
+          {% empty %}
+            {# ===== fallback: همان دو کاشی استاتیک قبلی ===== #}
+            <div class="side-tile group">
+              <div class="side-tile-bg bg-cover" style="background-image:url('{% static 'images/1.png' %}')"></div>
+              <div class="side-tile-overlay dark-gradient"></div>
+              <div class="side-tile-content inverse-text">
+                <span class="tile-tag text-secondary-fixed">تخفیف ویژه فناوری</span>
+                <h3 class="text-title-lg">گوشی‌های پرچمدار ۲۰۲۵</h3>
+                <p class="text-body-sm">ضمانت ۱۸ ماهه رسمی شرکتی</p>
+              </div>
+            </div>
+            <div class="side-tile group">
+              <div class="side-tile-bg bg-cover" style="background-image:url('{% static 'images/1.png' %}')"></div>
+              <div class="side-tile-overlay primary-gradient"></div>
+              <div class="side-tile-content on-primary">
+                <span class="tile-tag text-tertiary-fixed">پیشنهاد منتخب موسیقی</span>
+                <h3 class="text-title-lg">هدفون و اکسسوری صوتی</h3>
+                <p class="text-body-sm">تخفیف نقدی تا ۳۵٪ به مدت محدود</p>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+    </div>
+  </section>
+
+  <!-- ============ AMAZING DEALS ============ -->
+  <section class="section">
+    <div class="deals-box">
+      <div class="deals-decor">
+        <svg fill="currentColor" height="240" viewBox="0 0 100 100" width="240">
+          <path d="M50 0 L61.8 34.5 L98.2 34.5 L68.8 55.9 L80.6 90.5 L50 69.1 L19.4 90.5 L31.2 55.9 L1.8 34.5 L38.2 34.5 Z"></path>
+        </svg>
+      </div>
+
+      <div class="deals-layout">
+        <!-- Sidebar -->
+        <div class="deals-sidebar">
+          <div>
+            <span class="deals-badge">
+              <span class="material-symbols-outlined icon-18">local_fire_department</span>
+              <span>پیشنهادهای شگفت‌انگیز</span>
+            </span>
+            <h3 class="text-headline-md">حراج زمان‌دار روزانه</h3>
+            <p class="text-body-sm">تا پایان فرصت استثنایی امروز باقی‌مانده است:</p>
+          </div>
+
+          <div class="countdown" id="countdown-clock" dir="ltr">
+            <div class="countdown-box">
+              <span class="countdown-num" id="hours-val">۰۸</span>
+              <span class="countdown-lbl">ساعت</span>
+            </div>
+            <span class="countdown-sep">:</span>
+            <div class="countdown-box">
+              <span class="countdown-num" id="minutes-val">۴۴</span>
+              <span class="countdown-lbl">دقیقه</span>
+            </div>
+            <span class="countdown-sep">:</span>
+            <div class="countdown-box">
+              <span class="countdown-num accent" id="seconds-val">۱۹</span>
+              <span class="countdown-lbl">ثانیه</span>
+            </div>
+          </div>
+
+          <a href="#" class="deals-cta" data-path="super-deals">
+            <span>مشاهده همه تخفیف‌ها</span>
+            <span class="material-symbols-outlined icon-18">arrow_back</span>
+          </a>
+        </div>
+
+        <!-- Products -->
+        <div class="deals-products">
+            {% for product in offer_products %}
+              <div class="product-card group">
+                <div>
+                  <div class="product-media">
+                    <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                    <span class="discount-tag">{{ product.discount }}%</span>
+                    <button class="fav-btn" aria-label="افزودن به علاقه‌مندی">
+                      <span class="material-symbols-outlined icon-16">favorite</span>
+                    </button>
+                  </div>
+                  <h4 class="product-title">{{ product.title }}</h4>
+                  <div class="product-meta text-secondary-container">
+                    <span class="material-symbols-outlined icon-14">bolt</span>
+                    {% with cat=product.cetegories.first %}
+                        <span>{{ cat.name }}</span>
+                    {% endwith %}
+                  </div>
+                </div>
+                <div>
+                  <div class="price-row">
+                    <span class="price-old">{{ product.old_price|toman }}</span>
+                    <div class="price-new">
+                      <span class="text-headline-sm text-primary">{{ product.price|toman }}</span>
+                      <span class="text-label-sm text-outline">تومان</span>
+                    </div>
+                  </div>
+                  <div class="progress"><div class="progress-bar" style="width:78%"></div></div>
+                </div>
+              </div>
+            {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4-GRID PROMO BANNERS ============ -->
+  <section class="section">
+    <div class="promo4-grid">
+      <a href="#" class="promo-tile group" data-path="promo-gaming">
+        <div class="promo-bg bg-cover" style="background-image:url('{% static 'images/mobile_gamer.jpg' %}')"></div>
+        <div class="promo-overlay primary-gradient"></div>
+        <div class="promo-content on-primary">
+          <span class="text-label-sm text-secondary-fixed">تجهیزات گیمینگ</span>
+          <span class="text-title-md">لوازم حرفه‌ای گیمرهای موبایل</span>
+          <span class="text-body-sm">تا ۳۰٪ تخفیف اختصاصی</span>
+        </div>
+      </a>
+      <a href="#" class="promo-tile group" data-path="promo-kitchen">
+        <div class="promo-bg bg-cover" style="background-image:url('{% static 'images/gard.jpg' %}')"></div>
+        <div class="promo-overlay dark-gradient"></div>
+        <div class="promo-content inverse-text">
+          <span class="text-label-sm text-tertiary-fixed">انواع قاب گوشی</span>
+          <span class="text-title-md">با بهترین قیمت و بالاترین تنوع</span>
+          <span class="text-body-sm">ضمانت تعویض ۱۰ روزه</span>
+        </div>
+      </a>
+      <a href="#" class="promo-tile group" data-path="promo-skincare">
+        <div class="promo-bg bg-cover" style="background-image:url('{% static 'images/adaptor.jpg' %}')"></div>
+        <div class="promo-overlay primary-gradient"></div>
+        <div class="promo-content on-primary">
+          <span class="text-label-sm text-secondary-fixed">شارژ و اداپتور</span>
+          <span class="text-title-md">برای تمامی برند ها</span>
+          <span class="text-body-sm">اصالت کالا ۱۰۰٪ تضمینی</span>
+        </div>
+      </a>
+      <a href="#" class="promo-tile group" data-path="promo-books">
+        <div class="promo-bg bg-cover" style="background-image:url('{% static 'images/lavazem.jpg' %}')"></div>
+        <div class="promo-overlay dark-gradient"></div>
+        <div class="promo-content inverse-text">
+          <span class="text-label-sm text-tertiary-fixed">لوازم جانبی گوشی</span>
+          <span class="text-title-md">تمام لوازم جانبی موبایل</span>
+          <span class="text-body-sm">ارسال با بهترین بسته‌بندی</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ BESTSELLERS ============ -->
+  <section class="section">
+    <div class="section-head">
+      <div class="title-with-bar">
+        <span class="bar bar-primary"></span>
+        <div>
+          <h2 class="text-headline-sm">محصولات ویژه</h2>
+          <p class="text-body-sm text-outline">محصولات خاصی که توسط فروشگاه برگزیده شده اند</p>
+        </div>
+      </div>
+      <div class="tabs" id="bestseller-tabs">
+        <button class="bestseller-tab active" data-cat="all">همه دسته‌ها</button>
+        <button class="bestseller-tab" data-cat="digital">گوشی های گیمینگ</button>
+        <button class="bestseller-tab" data-cat="home">عکاسی با موبایل</button>
+        <button class="bestseller-tab" data-cat="fashion">اداپتور و کابل</button>
+      </div>
+    </div>
+
+    <div class="bestsellers-grid">
+        {% for product in featured_products %}
+          <a href="product_detail/{{ product.id }}/{{ product.title }}">
+              <div class="best-card group">
+                <div>
+                  <div class="product-media">
+                    <img src="{{ product.image.url }}" alt="پاوربانک">
+                  </div>
+                  {% with cat=product.cetegories.first %}
+                    <span class="brand-label">{{ cat.name }}</span>
+                  {% endwith %}
+                  <h3 class="product-title">{{ product.title }}</h3>
+                </div>
+                <div class="pt-xs">
+                  <div class="rating-row">
+                    <span class="material-symbols-outlined icon-14 text-secondary-container">star</span>
+                    <span>۴.۹</span><span>(۹۳۴ خرید)</span>
+                  </div>
+                  <div class="price-new">
+                    <span class="text-headline-sm">{{ product.price|toman }}</span>
+                    <span class="text-label-sm text-outline">تومان</span>
+                  </div>
+                </div>
+              </div>
+          </a>
+        {% endfor %}
+    </div>
+  </section>
+
+  <!-- ============ DUAL WIDE BANNERS ============ -->
+  <section class="section">
+    <div class="dual-grid">
+      <div class="dual-banner group">
+        <div class="dual-bg bg-cover" style="background-image:url('{% static 'images/fest.jpg' %}')"></div>
+        <div class="dual-overlay primary-gradient-to-r"></div>
+        <div class="dual-content on-primary">
+          <span class="text-label-sm text-secondary-container bold">جشنواره لوازم صوتی و تصویری</span>
+          <h3 class="text-headline-md">جشنواره فروش گوشی های گلکسی سامسونگ</h3>
+          <p class="text-body-sm">تخفیف تا ۱۰ میلیون تومان به همراه جوایز نفیس</p>
+          <a href="#" class="btn-light" data-path="tvs">
+            <span>بررسی مدل‌ها</span>
+            <span class="material-symbols-outlined icon-16">arrow_back</span>
+          </a>
+        </div>
+      </div>
+      <div class="dual-banner group">
+        <div class="dual-bg bg-cover" style="background-image:url('{% static 'images/sinema.jpg' %}')"></div>
+        <div class="dual-overlay secondary-gradient-to-r"></div>
+        <div class="dual-content on-secondary">
+          <span class="text-label-sm text-secondary-fixed bold">دکوراسیون و آرامش خانه</span>
+          <h3 class="text-headline-md">فیلم و انیمیشن رو 4k ببین</h3>
+          <p class="text-body-sm">گوشی هایی با صفحه نمایش خاص</p>
+          <a href="#" class="btn-secondary-container" data-path="furniture">
+            <span>خرید گوشی ها</span>
+            <span class="material-symbols-outlined icon-16">arrow_back</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BRANDS ============ -->
+  <section class="section">
+    <div class="section-head">
+      <div class="title-with-bar">
+        <span class="bar bar-secondary"></span>
+        <h2 class="text-headline-sm">محبوب‌ترین برندهای بازار آنلاین</h2>
+      </div>
+      <span class="text-label-md text-outline">تضمین اصالت صد در صدی کلیه کالاها</span>
+    </div>
+
+    <div class="brands-grid">
+      <a href="#" class="brand-card" data-path="brand-samsung">
+        <div class="brand-circle"><span class="text-headline-sm bold">سام</span></div>
+        <span class="text-label-md">سامسونگ</span>
+      </a>
+      <a href="#" class="brand-card" data-path="brand-apple">
+        <div class="brand-circle"><span class="material-symbols-outlined icon-26">phone_iphone</span></div>
+        <span class="text-label-md">اپل</span>
+      </a>
+      <a href="#" class="brand-card" data-path="brand-xiaomi">
+        <div class="brand-circle"><span class="material-symbols-outlined icon-26">devices_other</span></div>
+        <span class="text-label-md">شیائومی</span>
+      </a>
+      <a href="#" class="brand-card" data-path="brand-sony">
+        <div class="brand-circle"><span class="material-symbols-outlined icon-26">headphones</span></div>
+        <span class="text-label-md">سونی</span>
+      </a>
+      <a href="#" class="brand-card" data-path="brand-bosch">
+        <div class="brand-circle"><span class="material-symbols-outlined icon-26">kitchen</span></div>
+        <span class="text-label-md">بوش</span>
+      </a>
+      <a href="#" class="brand-card" data-path="brand-philips">
+        <div class="brand-circle"><span class="material-symbols-outlined icon-26">electric_bolt</span></div>
+        <span class="text-label-md">فیلیپس</span>
+      </a>
+      <a href="#" class="brand-card" data-path="brand-nike">
+        <div class="brand-circle"><span class="material-symbols-outlined icon-26">steps</span></div>
+        <span class="text-label-md">نایک</span>
+      </a>
+      <a href="#" class="brand-card" data-path="brand-dorsa">
+        <div class="brand-circle"><span class="material-symbols-outlined icon-26">diamond</span></div>
+        <span class="text-label-md">درسا</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ LATEST ARRIVALS ============ -->
+  <section class="section">
+    <div class="section-head">
+      <div class="title-with-bar">
+        <span class="bar bar-tertiary"></span>
+        <div>
+          <h2 class="text-headline-sm">پر بازدید ترین محصولات</h2>
+          <p class="text-body-sm text-outline">محصولاتی که بیشترین بار توسط کاربران دیده شده اند</p>
+        </div>
+      </div>
+      <a href="#" class="link-arrow" data-path="new-arrivals">
+        <span>مشاهده همه تازه‌ها</span>
+        <span class="material-symbols-outlined icon-18">arrow_back</span>
+      </a>
+    </div>
+
+    <div class="new-grid">
+      {% for product in most_visits %}
+        <div class="new-card group">
+            <div>
+              <div class="product-media">
+                <img src="{{ product.image.url }}" alt="آسیاب قهوه">
+              </div>
+              {% with cat=product.cetegories.first %}
+                <span class="brand-label">{{ cat.name }}</span>
+              {% endwith %}
+              <h4 class="text-title-md">{{ product.title }}</h4>
+              <p class="text-body-sm text-outline"> {{ product.description }}</p>
+            </div>
+            <div class="new-footer">
+              <div class="price-new">
+                <span class="text-headline-sm text-primary">{{ product.price|toman }}</span>
+                <span class="text-label-sm text-outline">تومان</span>
+              </div>
+              <a class="add-cart" aria-label="افزودن به سبد خرید" href="product_detail/{{ product.id }}/{{ product.title }}">
+                <span class="material-symbols-outlined icon-20">add_shopping_cart</span>
+              </a>
+            </div>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ============ BLOG ============ -->
+  <section class="section blog-section">
+    <div class="section-head">
+      <div>
+        <h2 class="text-headline-sm">راهنمای خرید و مجله بازار آنلاین</h2>
+        <p class="text-body-sm text-outline">بررسی تخصصی، مقایسه محصولات و جدیدترین ترندهای بازار</p>
+      </div>
+      <a href="#" class="link-arrow" data-path="blog">
+        <span>مطالب بیشتر در وبلاگ</span>
+        <span class="material-symbols-outlined icon-18">arrow_back</span>
+      </a>
+    </div>
+
+    <div class="blog-grid">
+      <article class="blog-card group">
+        <div class="blog-thumb">
+          <img src="{% static 'images/blog1.jpg' %}" alt="راهنمای خرید گوشی">
+          <span class="blog-tag">راهنمای خرید دیجیتال</span>
+        </div>
+        <div class="blog-body">
+          <div>
+            <span class="blog-meta">۲۵ فروردین ۱۴۰۳ • زمان مطالعه: ۶ دقیقه</span>
+            <h3 class="text-title-lg">راهنمای جامع خرید گوشی‌های پرچمدار و میان‌رده در بهار ۱۴۰۳</h3>
+            <p class="text-body-sm text-on-surface-variant line-clamp-3">در این مقاله فاکتورهای کلیدی نظیر تراشه پردازنده، روشنایی پنل، عمر مفید باتری و الگوریتم‌های پردازش تصویر را در ۵ بازه قیمتی متفاوت مقایسه کرده‌ایم.</p>
+          </div>
+          <a href="#" class="link-arrow small" data-path="blog-article-1">
+            <span>ادامه مطلب تخصصی</span>
+            <span class="material-symbols-outlined icon-16">arrow_back</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="blog-card group">
+        <div class="blog-thumb">
+          <img src="{% static 'images/blog2.jpg' %}" alt="اسپرسوساز">
+          <span class="blog-tag">خانه و سبک زندگی</span>
+        </div>
+        <div class="blog-body">
+          <div>
+            <span class="blog-meta">۲۲ فروردین ۱۴۰۳ • زمان مطالعه: ۴ دقیقه</span>
+            <h3 class="text-title-lg">چگونه یک بارستای حرفه‌ای در خانه باشیم؟ نکات انتخاب اسپرسوساز</h3>
+            <p class="text-body-sm text-on-surface-variant line-clamp-3">تفاوت بویلرهای ترموبلاک با دوگانه، فشار استاندارد بخار، و اهمیت آسیاب دقیق قهوه در استخراج یک شات کرمادار بی‌نقص را بررسی می‌کنیم.</p>
+          </div>
+          <a href="#" class="link-arrow small" data-path="blog-article-2">
+            <span>ادامه مطلب تخصصی</span>
+            <span class="material-symbols-outlined icon-16">arrow_back</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="blog-card group">
+        <div class="blog-thumb">
+          <img src="{% static 'images/blog3.jpg' %}" alt="کفش دویدن">
+          <span class="blog-tag">سلامت و تناسب اندام</span>
+        </div>
+        <div class="blog-body">
+          <div>
+            <span class="blog-meta">۱۸ فروردین ۱۴۰۳ • زمان مطالعه: ۵ دقیقه</span>
+            <h3 class="text-title-lg">انتخاب کفش دویدن بر اساس فرم کف پا و وزن: راهنمای گام به گام</h3>
+            <p class="text-body-sm text-on-surface-variant line-clamp-3">پیشگیری از آسیب‌های زانو و ستون فقرات با انتخاب زیره مناسب، کوسن‌های هوایی و لایه‌های ژلی متناسب با انواع پرونیشن پا.</p>
+          </div>
+          <a href="#" class="link-arrow small" data-path="blog-article-3">
+            <span>ادامه مطلب تخصصی</span>
+            <span class="material-symbols-outlined icon-16">arrow_back</span>
+          </a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+</main>
+{% endblock %}
+
+{% block script %}
+  <script src="{% static 'home_page/script.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  (function () {
+    var swiperEl = document.querySelector('.hero-swiper');
+    if (!swiperEl) return;
+
+    var count = swiperEl.querySelectorAll('.swiper-slide').length;
+
+    new Swiper('.hero-swiper', {
+      rtl: true,
+      loop: count > 1,
+      autoplay: count > 1 ? { delay: 5000, disableOnInteraction: false } : false,
+      effect: 'fade',
+      fadeEffect: { crossFade: true },
+      pagination: { el: '.slider-dots', clickable: true },
+      navigation: { nextEl: '.hero-next', prevEl: '.hero-prev' },
+    });
+  })();
+</script>
+{% endblock %}

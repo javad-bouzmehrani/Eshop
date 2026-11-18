@@ -1,0 +1,61 @@
+{% extends "admin/base.html" %}
+{% load i18n unfold %}
+
+{% block content %}
+<div class="px-4 lg:px-8 py-6">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        <div class="rounded-lg border border-base-200 bg-white p-5 shadow-sm dark:border-base-800 dark:bg-base-900">
+            <p class="text-sm text-base-500 dark:text-base-400">کل سفارش‌ها</p>
+            <p class="mt-2 text-3xl font-bold text-font-important-light dark:text-font-important-dark">{{ kpi_orders_total }}</p>
+        </div>
+        <div class="rounded-lg border border-base-200 bg-white p-5 shadow-sm dark:border-base-800 dark:bg-base-900">
+            <p class="text-sm text-base-500 dark:text-base-400">سفارش‌های پرداخت‌شده</p>
+            <p class="mt-2 text-3xl font-bold text-green-600">{{ kpi_orders_paid }}</p>
+        </div>
+        <div class="rounded-lg border border-base-200 bg-white p-5 shadow-sm dark:border-base-800 dark:bg-base-900">
+            <p class="text-sm text-base-500 dark:text-base-400">در انتظار پرداخت</p>
+            <p class="mt-2 text-3xl font-bold text-yellow-600">{{ kpi_orders_pending }}</p>
+        </div>
+        <div class="rounded-lg border border-base-200 bg-white p-5 shadow-sm dark:border-base-800 dark:bg-base-900">
+            <p class="text-sm text-base-500 dark:text-base-400">محصولات فعال</p>
+            <p class="mt-2 text-3xl font-bold text-primary-600">{{ kpi_products_active }} / {{ kpi_products_total }}</p>
+        </div>
+    </div>
+
+    <div class="mt-6 rounded-lg border border-base-200 bg-white p-5 shadow-sm dark:border-base-800 dark:bg-base-900">
+        <h3 class="mb-4 text-lg font-semibold">آخرین سفارش‌ها</h3>
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="border-b border-base-200 dark:border-base-800">
+                    <th class="py-2 text-right">شناسه</th>
+                    <th class="py-2 text-right">کاربر</th>
+                    <th class="py-2 text-right">وضعیت</th>
+                    <th class="py-2 text-right">مبلغ</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in recent_orders %}
+                <tr class="border-b border-base-100 dark:border-base-800">
+                    <td class="py-2">
+                        <a href="{% url 'admin:eshop_order_order_change' order.id %}" class="text-primary-600 hover:underline">
+                            #{{ order.id }}
+                        </a>
+                    </td>
+                    <td class="py-2">{{ order.user.get_full_name|default:order.user.username }}</td>
+                    <td class="py-2">
+                        {% if order.paid %}
+                            <span class="rounded bg-green-100 px-2 py-1 text-xs text-green-800">پرداخت‌شده</span>
+                        {% else %}
+                            <span class="rounded bg-yellow-100 px-2 py-1 text-xs text-yellow-800">در انتظار</span>
+                        {% endif %}
+                    </td>
+                    <td class="py-2">{{ order.total }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="py-4 text-center text-base-500">سفارشی ثبت نشده است.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

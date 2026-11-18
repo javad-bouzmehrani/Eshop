@@ -1,0 +1,286 @@
+{% load static %}
+{% load static price_tags %}
+
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>پروفایل کاربری | بازار آنلاین</title>
+  <link rel="stylesheet" href="{% static 'profile/style.css' %}" />
+</head>
+<body>
+
+  <!-- پس‌زمینه نورانی -->
+  <div class="glow" aria-hidden="true">
+    <div class="glow__one"></div>
+    <div class="glow__two"></div>
+  </div>
+
+  <main class="app">
+
+    <!-- نوار بالا -->
+    <div class="topbar">
+      <div class="topbar__start">
+        <a href="/" class="back-btn" title="بازگشت" aria-label="بازگشت">
+          <span class="material-symbols-outlined icon-20" aria-hidden="true">arrow_forward</span>
+        </a>
+        <div>
+          <h1 class="topbar__title">
+            <span>حساب کاربری من</span>
+            <span class="gold-badge">
+              <span class="dot-green"></span>
+              کاربر طلایی
+            </span>
+          </h1>
+          <p class="topbar__subtitle">مدیریت اطلاعات فردی، سفارش‌ها و دسترسی سریع</p>
+        </div>
+      </div>
+
+      <div class="topbar__actions">
+        <button type="button" class="btn-outline"
+                data-toast="تنظیمات حساب به‌زودی در دسترس قرار می‌گیرد.">
+          <span class="material-symbols-outlined icon-18" aria-hidden="true">tune</span>
+          <span class="hide-sm">تنظیمات</span>
+        </button>
+        <a class="btn-danger" href="{% url 'Logout' %}">
+          <span class="material-symbols-outlined icon-18" aria-hidden="true">logout</span>
+          <span>خروج</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- چیدمان اصلی -->
+    <div class="layout">
+
+      <!-- ستون کناری -->
+      <div class="col-side">
+
+        <!-- کارت پروفایل -->
+        <div class="profile-card">
+          <div class="profile-card__cover" aria-hidden="true"></div>
+
+          <div class="avatar-wrap">
+            <div class="avatar" id="avatarBox">
+              <svg viewBox="0 0 100 100" role="img" aria-label="تصویر پروفایل کاربر">
+                <defs>
+                  <linearGradient id="avatarGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#1e3a8a" />
+                    <stop offset="100%" stop-color="#00236f" />
+                  </linearGradient>
+                </defs>
+                <rect width="100" height="100" fill="url(#avatarGrad)" />
+                <circle cx="50" cy="38" r="16" fill="#90a8ff" />
+                <path d="M50 58c-16.5 0-29 10.5-31 25h62c-2-14.5-14.5-25-31-25z" fill="#90a8ff" />
+              </svg>
+            </div>
+            <button type="button" class="avatar-edit" id="avatarBtn"
+                    title="ویرایش تصویر" aria-label="ویرایش تصویر پروفایل">
+              <span class="material-symbols-outlined icon-16" aria-hidden="true">photo_camera</span>
+            </button>
+            <input type="file" id="avatarInput" accept="image/*" hidden />
+          </div>
+
+          <h2 class="profile-card__name">{{ first_name }} {{ last_name }}</h2>
+          <span class="profile-card__phone" dir="ltr">{{ phone }}</span>
+
+          <div class="stats">
+            <div class="stat">
+              <span class="stat__label">کیف پول</span>
+              <span class="stat__value">۴۵۰,۰۰۰ <span class="stat__unit">تومان</span></span>
+            </div>
+            <div class="stat">
+              <span class="stat__label">امتیاز باشگاه</span>
+              <span class="stat__value stat__value--secondary">۱,۲۸۰ <span class="stat__unit">امتیاز</span></span>
+            </div>
+          </div>
+
+          <button type="button" class="btn-primary"
+                  data-toast="درگاه افزایش موجودی کیف پول باز می‌شود." data-toast-type="success">
+            <span class="material-symbols-outlined icon-18" aria-hidden="true">account_balance_wallet</span>
+            <span>افزایش موجودی کیف پول</span>
+          </button>
+        </div>
+
+        <!-- منوی کناری -->
+        <nav class="side-nav" aria-label="منوی پروفایل">
+          <a href="#" class="nav-item nav-item--active" aria-current="page">
+            <span class="nav-item__main">
+              <span class="material-symbols-outlined icon-20" aria-hidden="true">person</span>
+              <span>مشخصات فردی</span>
+            </span>
+            <span class="material-symbols-outlined icon-18 nav-item__arrow" aria-hidden="true">chevron_left</span>
+          </a>
+
+          <a href="#" class="nav-item" data-toast="بخش سفارش‌ها و مرسوله‌ها">
+            <span class="nav-item__main">
+              <span class="material-symbols-outlined icon-20" aria-hidden="true">local_shipping</span>
+              <span>سفارش‌ها و مرسوله‌ها</span>
+            </span>
+            <span class="nav-badge">۲</span>
+          </a>
+
+          <a href="#" class="nav-item" data-toast="بخش علاقه‌مندی‌ها">
+            <span class="nav-item__main">
+              <span class="material-symbols-outlined icon-20" aria-hidden="true">favorite</span>
+              <span>علاقه‌مندی‌ها</span>
+            </span>
+            <span class="nav-count">۴ کالا</span>
+          </a>
+
+          <a href="#" class="nav-item" data-toast="بخش آدرس‌های من">
+            <span class="nav-item__main">
+              <span class="material-symbols-outlined icon-20" aria-hidden="true">location_on</span>
+              <span>آدرس‌های من</span>
+            </span>
+            <span class="material-symbols-outlined icon-18 nav-item__arrow" aria-hidden="true">chevron_left</span>
+          </a>
+
+          <a href="#" class="nav-item" data-toast="بخش پیام‌ها و اعلان‌ها">
+            <span class="nav-item__main">
+              <span class="material-symbols-outlined icon-20" aria-hidden="true">notifications</span>
+              <span>پیام‌ها و اعلان‌ها</span>
+            </span>
+            <span class="material-symbols-outlined icon-18 nav-item__arrow" aria-hidden="true">chevron_left</span>
+          </a>
+        </nav>
+
+      </div>
+
+      <!-- ستون محتوا -->
+      <div class="col-main">
+
+        <!-- اطلاعات هویتی -->
+        <section class="card">
+          <div class="card__head">
+            <div class="card__head-start">
+              <div class="card__icon icon-primary">
+                <span class="material-symbols-outlined icon-20" aria-hidden="true">badge</span>
+              </div>
+              <h3 class="card__title">اطلاعات هویتی و ارتباطی</h3>
+            </div>
+            <a class="link-btn" href="{% url 'edit_profile' %}">
+              <span class="material-symbols-outlined icon-16" aria-hidden="true">edit</span>
+              <span>ویرایش اطلاعات</span>
+            </a>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-item__label">نام و نام خانوادگی</span>
+              <span class="info-item__value">{{ first_name }} {{ last_name }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-item__label">شماره تلفن همراه</span>
+              <span class="info-item__value" dir="ltr">{{ phone|fa_digits }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-item__label">پست الکترونیک (ایمیل)</span>
+              <span class="info-item__value" dir="ltr">{{ email }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-item__label">کد ملی</span>
+              <span class="info-item__value" dir="ltr" data-copy="0018492310">۰۰۱۸۴۹۲۳۱۰</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- آخرین سفارش‌ها -->
+        <section class="card">
+          <div class="card__head">
+            <div class="card__head-start">
+              <div class="card__icon icon-secondary">
+                <span class="material-symbols-outlined icon-20" aria-hidden="true">shopping_bag</span>
+              </div>
+              <h3 class="card__title">آخرین سفارش‌ها</h3>
+            </div>
+            <a href="#" class="link-btn" data-toast="لیست کامل سفارش‌ها">
+              <span>مشاهده همه</span>
+              <span class="material-symbols-outlined icon-16" aria-hidden="true">chevron_left</span>
+            </a>
+          </div>
+
+          <!-- سفارش ۱ -->
+          <div class="order">
+            <div class="order__start">
+              <div class="order__icon order__icon--primary">
+                <span class="material-symbols-outlined icon-24" aria-hidden="true">devices</span>
+              </div>
+              <div>
+                <div class="order__title-row">
+                  <span class="order__id">سفارش #DK-84920</span>
+                  <span class="pill pill--done">تحویل شده</span>
+                </div>
+                <p class="order__meta">ثبت شده در ۲۴ فروردین ۱۴۰۴ • ۲ قلم کالا</p>
+              </div>
+            </div>
+            <div class="order__end">
+              <span class="order__price">۳,۲۹۰,۰۰۰ تومان</span>
+              <a href="#" class="btn-ghost" data-toast="فاکتور سفارش #DK-84920">فاکتور</a>
+            </div>
+          </div>
+
+          <!-- سفارش ۲ -->
+          <div class="order">
+            <div class="order__start">
+              <div class="order__icon order__icon--secondary">
+                <span class="material-symbols-outlined icon-24" aria-hidden="true">local_shipping</span>
+              </div>
+              <div>
+                <div class="order__title-row">
+                  <span class="order__id">سفارش #DK-84801</span>
+                  <span class="pill pill--process">در حال پردازش</span>
+                </div>
+                <p class="order__meta">ثبت شده در ۲۸ فروردین ۱۴۰۴ • ۱ قلم کالا</p>
+              </div>
+            </div>
+            <div class="order__end">
+              <span class="order__price">۱,۴۷۰,۰۰۰ تومان</span>
+              <a href="#" class="btn-ghost" data-toast="پیگیری سفارش #DK-84801">پیگیری</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- آدرس پیش‌فرض -->
+        <section class="card">
+          <div class="card__head">
+            <div class="card__head-start">
+              <div class="card__icon icon-primary">
+                <span class="material-symbols-outlined icon-20" aria-hidden="true">home_pin</span>
+              </div>
+              <h3 class="card__title">آدرس تحویل پیش‌فرض</h3>
+            </div>
+            <button type="button" class="link-btn" data-toast="فرم افزودن آدرس جدید باز شد.">
+              <span class="material-symbols-outlined icon-16" aria-hidden="true">add_location_alt</span>
+              <span>افزودن آدرس</span>
+            </button>
+          </div>
+
+          <div class="address">
+            <span class="material-symbols-outlined icon-22 address__icon" aria-hidden="true">location_on</span>
+            <div class="address__body">
+              <div class="address__title-row">
+                <span class="address__title">تهران، منطقه ۲ (منزل)</span>
+                <span class="tag">پیش‌فرض</span>
+              </div>
+              <p class="address__text">
+                سعادت آباد، میدان کاج، بلوار سرو غربی، پلاک ۲۴، واحد ۵
+              </p>
+              <div class="address__meta">
+                <span>کد پستی: ۱۹۹۸۷-۱۲۳۴۵</span>
+                <span>تحویل گیرنده: علیرضا کریمی</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- محل نمایش پیام‌ها -->
+  <div class="toast-host" id="toastHost" role="status" aria-live="polite"></div>
+
+  <script src="{% static 'profile/script.js' %}"></script>
+</body>
+</html>
